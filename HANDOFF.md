@@ -100,6 +100,29 @@ No image upload exists anywhere in this codebase (products have no `image_url` f
 2. Log into `/admin` with the real password and run through the CRUD checklist by hand (add/edit/hide/delete a product and a category; confirm a hidden product disappears from `/` but stays visible and editable in `/admin`).
 3. Optionally: grant this session's Supabase MCP connector access to `snntyrevgtyjjwnsdsrj` so future sessions can apply migrations and query state directly instead of going through the SQL editor by hand.
 
+## Session update 3 (2026-08-27)
+Re-checked Supabase MCP access to `snntyrevgtyjjwnsdsrj`: still not accessible (`list_projects` shows only `gdgatlehbbutbetccfxe` and `mmnoakrozofyobfwxuns`, `execute_sql` on `snntyrevgtyjjwnsdsrj` returns a permission error). Did not touch either accessible project — neither is MenuLink. **The RLS migration still has not been applied by this session and needs the user to run it in the SQL editor.**
+
+**Real, verified DB-level security tests (via direct REST calls with the public anon key, from this session, against the live production database — not a code review):**
+- `anon` INSERT on `menu_items`: **HTTP 401**, `42501 new row violates row-level security policy for table "menu_items"` — rejected.
+- `anon` INSERT on `menu_categories`: **HTTP 401**, same `42501` error — rejected.
+- `anon` UPDATE on `menu_items` (id=1) and `menu_categories` (id="drip"): request succeeded at the HTTP layer but matched **zero rows** — verified both rows completely unchanged afterward. RLS's `USING` clause excludes them from the anon role's writable set, which is the correct/expected way Postgres RLS blocks UPDATE (not an error status, a 0-row match).
+- `anon` DELETE on the same two rows: same result — 0 rows affected, both rows verified still present and unchanged afterward.
+- `anon` SELECT on `menu_items` and `menu_categories`: returns exactly 32 items / 8 categories, all `is_active: true` — matches the counts in this file's original "Seeded data" note.
+
+This means **anon write protection is already correctly enforced live, right now**, independent of whether `supabase_migration_fix_rls.sql` has been run — either it was already applied out-of-band, or the original write policies (not visible in the stale `SUPABASE_SCHEMA.sql` reference file) already covered this. No test data was left behind: the rejected INSERT created nothing (verified by re-querying for it), and the UPDATE/DELETE attempts never matched a row to begin with.
+
+**What is still genuinely unverified (not "assumed passing," actually untested) because it requires an authenticated admin session and this session will not enter a password into any form under any circumstance:**
+- Whether `authenticated` (the admin) can actually SELECT hidden (`is_active=false`) rows — the specific bug this migration targets.
+- Whether `authenticated` INSERT/UPDATE/DELETE actually succeed for the admin and are still correctly scoped to only `i1yasser@hotmail.com` (not open to any authenticated user).
+- Full login/logout/session-persistence flow with the real password.
+- End-to-end CRUD through the actual admin UI (add/edit/disable/delete a real product and category, confirm a hidden product disappears from `/` but stays visible in `/admin`).
+There is no test account, no existing session token, and no service-role/impersonation access available to this session for `snntyrevgtyjjwnsdsrj` — these can only be run by the user, by hand, after logging in with the real password.
+
+**Site features that do not exist in this codebase** (so were not "tested" as failing — they were checked and confirmed absent): search, cart, tax calculation, order submission. `index.html` is a static, read-only, browsable menu with no ordering flow of any kind.
+
+**GitHub/Vercel state, unchanged this round:** no files were modified in this session (only read-only Supabase/API calls), so no new commit was needed. Latest commit remains `296753f` on `main` at https://github.com/i1yasser7342-prog/menulink-menu-site. Confirmed via `list_deployments` that the Vercel production deployment `dpl_GvA3oD8yBCAqPB2qbbQcZJ3aYeL8` (the one deployed from this exact commit's file contents last round) is still the current, most recent production deployment (`state: READY`). Note: this Vercel project (`menulink-menu`) is **not** git-linked to the new GitHub repo — deployments are pushed by file content via the Vercel API, not by a git push triggering a build. "Vercel is on the latest commit" is therefore true by content-equality (verified: the deployed HTML matches what's in commit `296753f`), not by a git-integration link.
+
 ## Recommended next work for Claude
 1. Treat this folder as the only working copy for this handoff.
 2. Inspect current/index.html and current/admin.html before changing anything.
