@@ -68,6 +68,7 @@
 .item:hover{transform:translateY(-3px);box-shadow:0 12px 34px rgba(24,45,36,.08);border-color:#b8b4aa}
 .item h4{margin:0 0 8px;font-size:17px}
 .item p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
+.item-photo{width:100%;height:140px;object-fit:cover;border-radius:12px;margin-bottom:14px;display:block}
 .badge{display:inline-block;margin-top:12px;font-size:11px;background:var(--lime);padding:4px 10px;border-radius:999px;color:var(--green-dark);font-weight:700}
 
 footer{background:var(--green-dark);color:#fff;padding:60px 0}
@@ -169,6 +170,10 @@ const CATEGORY_BANNERS = {
   breakfast: { cdn: 'https://raw.githubusercontent.com/i1yasser7342-prog/menulink-menu-site/main/current/images/breakfast_42.jpg', fallback: 'images/breakfast_42.jpg' }
 };
 
+const PRODUCT_IMAGES = {
+  'بيض تركي': { cdn: 'https://raw.githubusercontent.com/i1yasser7342-prog/menulink-menu-site/main/current/images/breakfast_16.jpg', fallback: 'images/breakfast_16.jpg' }
+};
+
 const fallbackMenu = [
   {id:'drip',name:'القهوة المقطرة',icon:'◌',items:[['V60 إثيوبي','قهوة زهرية بنكهة البرغموت والخوخ'],['V60 كولومبي','كراميل، كاكاو، وفواكه حمراء'],['كولد برو','استخلاص بارد لمدة 18 ساعة','الأكثر طلباً'],['كيمكس لشخصين','استخلاص نقي ومتوازن']]},
   {id:'espresso',name:'إسبريسو',icon:'●',items:[['إسبريسو','جرعة مركزة ومتوازنة'],['أمريكانو','إسبريسو وماء ساخن'],['كابتشينو','إسبريسو وحليب مبخر'],['فلات وايت','قوام مخملي ونكهة قهوة واضحة','مميز']]},
@@ -223,7 +228,7 @@ function renderMenu(menu) {
     element.className = 'menu-section';
     element.id = section.id;
     const banner = CATEGORY_BANNERS[section.id];
-    element.innerHTML = `${banner ? `<div class="section-banner"><img src="${banner.cdn}" onerror="this.onerror=null;this.src='${banner.fallback}'" alt="${escapeHtml(section.name)}" loading="lazy"><div class="banner-scrim"><strong>${escapeHtml(section.name)}</strong></div></div>` : ''}<div class="menu-heading"><h3>${escapeHtml(section.name)}</h3><span>${escapeHtml(section.icon)}</span></div><div class="items">${section.items.map(item => `<article class="item"><h4>${escapeHtml(item[0])}</h4><p>${escapeHtml(item[1])}</p>${item[2] ? `<span class="badge">${escapeHtml(item[2])}</span>` : ''}</article>`).join('')}</div>`;
+    element.innerHTML = `${banner ? `<div class="section-banner"><img src="${banner.cdn}" onerror="this.onerror=null;this.src='${banner.fallback}'" alt="${escapeHtml(section.name)}" loading="lazy"><div class="banner-scrim"><strong>${escapeHtml(section.name)}</strong></div></div>` : ''}<div class="menu-heading"><h3>${escapeHtml(section.name)}</h3><span>${escapeHtml(section.icon)}</span></div><div class="items">${section.items.map(item => { const photo = PRODUCT_IMAGES[item[0]]; return `<article class="item">${photo ? `<img class="item-photo" src="${photo.cdn}" onerror="this.onerror=null;this.src='${photo.fallback}'" alt="${escapeHtml(item[0])}" loading="lazy">` : ''}<h4>${escapeHtml(item[0])}</h4><p>${escapeHtml(item[1])}</p>${item[2] ? `<span class="badge">${escapeHtml(item[2])}</span>` : ''}</article>`; }).join('')}</div>`;
     sections.appendChild(element);
   });
 
