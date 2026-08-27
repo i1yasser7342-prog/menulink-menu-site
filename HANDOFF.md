@@ -165,6 +165,22 @@ Sourced from the "pro diet" Google Drive folder the user shared (read-only, `zah
 - No horizontal overflow at 375px mobile width; gallery grid reflows to 2 columns.
 - `/admin` connection diagnostic still returns `HTTP 200 | Supabase متصل`.
 
+## Session update 6 (2026-08-27) — per-product photo matching against Drive folder
+Task: match every photo in the same three "pro diet" Drive folders (فطور 12, حلويات 26, اطباق رئيسيه 67 — 105 photos total, exact counts obtained via full accessibility-tree scroll-through, not the Drive search API, which undercounted اطباق رئيسيه by more than half) to a specific existing Supabase product, adding the photo only where the match was certain. Explicit instruction: no guessing, and no changes to design/text/categories/prices/DB/RLS/admin — report unmatched images instead of forcing a match.
+
+**Method:** every photo in all three folders was opened and visually reviewed (zoomed where needed) against the exact `name_ar` + `description_ar` of the products in the only two categories a food photo could plausibly belong to (`breakfast`, `dessert` — the other 6 categories are coffee/drinks/dry-goods). A match was only accepted when the photo had a distinctive, unambiguous visual signature matching the description, not just "generic food that could be many things."
+
+**Result: exactly one confirmed match.** `pro diet_26.JPG` (فطور) → **بيض تركي** ("لبنة، بيض، وزبدة بابريكا") — paprika-dusted egg halves plate with a white labneh dip in the center is a distinctive, unambiguous match. Downloaded, optimized with `sips` (480px/quality 40, 1.9MB → 26KB) exactly like prior images, saved as `current/images/breakfast_16.jpg`.
+
+Everything else was rejected as not confidently matchable:
+- **فطور (11 other photos):** boiled/deviled-egg-in-cream-sauce plates without paprika, herb-topped toasted buns with no visible fresh vegetables, a lentil soup bowl, a savory rice/wrap bowl, pita-and-banana platters, a grilled-sandwich plate with no visible filling — none carry the specific signature of توست أفوكادو، جرانولا بول، or ساندويتش حلوم.
+- **حلويات (all 26 photos):** every photo is a modern jar/bowl-style pudding, parfait, or overnight-oats jar — none show the distinctive burnt-top Basque cheesecake (سان سباستيان), date-cinnamon cake (كيكة تمر), almond croissant shape (كرواسون لوز), or flat chocolate cookie (كوكي شوكولاتة) the 4 dessert products describe.
+- **اطباق رئيسيه (all 67 photos):** pasta/rice/chicken/salad entrée plates — the live menu has no "main dishes" category at all (only breakfast, dessert, drip, espresso, matcha, daily, drinks, extras), so these are categorically unmatched regardless of content.
+
+**Code change (client-side only, no DB/Supabase/RLS/admin touched):** added a `PRODUCT_IMAGES` map in `index.html`, keyed by exact product name, following the same `{cdn, fallback}` pattern as the existing `CATEGORY_BANNERS`. `renderMenu()`'s item template now renders a `.item-photo` `<img>` (new minimal CSS rule, 140px height, `object-fit:cover`) above the item name only when a match exists in the map — items without a match render exactly as before, no layout change. No text, price, category, or design element was touched.
+
+**Deployed and verified live** (production Vercel deployment `dpl_FFoQ9xF3eYt1v858RpUYQsSB2Yyg`, pushed to the public GitHub repo first): confirmed via JS-level check (screenshot tool remains unreliable in this session, per Session update 5) that exactly one `.item-photo` element renders on the live site, with `alt="بيض تركي"` and `src` pointing at `raw.githubusercontent.com/.../breakfast_16.jpg`; a direct cache-busted `Image()` fetch of that URL confirmed it loads at 480×360.
+
 ## Recommended next work for Claude
 1. Treat this folder as the only working copy for this handoff.
 2. Inspect current/index.html and current/admin.html before changing anything.
