@@ -189,7 +189,7 @@ async function loadMenu() {
   const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
   const [categoriesResponse, itemsResponse] = await Promise.all([
     fetch(`${SUPABASE_URL}/rest/v1/menu_categories?select=id,name_ar,icon,sort_order&is_active=eq.true&order=sort_order.asc`, { headers }),
-    fetch(`${SUPABASE_URL}/rest/v1/menu_items?select=category_id,name_ar,description_ar,badge_ar,sort_order&is_active=eq.true&order=sort_order.asc`, { headers })
+    fetch(`${SUPABASE_URL}/rest/v1/menu_items?select=category_id,name_ar,description_ar,badge_ar,image_url,sort_order&is_active=eq.true&order=sort_order.asc`, { headers })
   ]);
 
   if (!categoriesResponse.ok || !itemsResponse.ok) throw new Error('تعذر تحميل بيانات المنيو');
@@ -202,7 +202,7 @@ async function loadMenu() {
     icon: category.icon,
     items: items
       .filter(item => item.category_id === category.id)
-      .map(item => [item.name_ar, item.description_ar || '', item.badge_ar || undefined])
+      .map(item => [item.name_ar, item.description_ar || '', item.badge_ar || undefined, item.image_url || undefined])
   }));
 }
 
@@ -228,7 +228,7 @@ function renderMenu(menu) {
     element.className = 'menu-section';
     element.id = section.id;
     const banner = CATEGORY_BANNERS[section.id];
-    element.innerHTML = `${banner ? `<div class="section-banner"><img src="${banner.cdn}" onerror="this.onerror=null;this.src='${banner.fallback}'" alt="${escapeHtml(section.name)}" loading="lazy"><div class="banner-scrim"><strong>${escapeHtml(section.name)}</strong></div></div>` : ''}<div class="menu-heading"><h3>${escapeHtml(section.name)}</h3><span>${escapeHtml(section.icon)}</span></div><div class="items">${section.items.map(item => { const photo = PRODUCT_IMAGES[item[0]]; return `<article class="item">${photo ? `<img class="item-photo" src="${photo.cdn}" onerror="this.onerror=null;this.src='${photo.fallback}'" alt="${escapeHtml(item[0])}" loading="lazy">` : ''}<h4>${escapeHtml(item[0])}</h4><p>${escapeHtml(item[1])}</p>${item[2] ? `<span class="badge">${escapeHtml(item[2])}</span>` : ''}</article>`; }).join('')}</div>`;
+    element.innerHTML = `${banner ? `<div class="section-banner"><img src="${banner.cdn}" onerror="this.onerror=null;this.src='${banner.fallback}'" alt="${escapeHtml(section.name)}" loading="lazy"><div class="banner-scrim"><strong>${escapeHtml(section.name)}</strong></div></div>` : ''}<div class="menu-heading"><h3>${escapeHtml(section.name)}</h3><span>${escapeHtml(section.icon)}</span></div><div class="items">${section.items.map(item => { const photo = item[3] ? { cdn: item[3], fallback: item[3] } : PRODUCT_IMAGES[item[0]]; return `<article class="item">${photo ? `<img class="item-photo" src="${photo.cdn}" onerror="this.onerror=null;this.src='${photo.fallback}'" alt="${escapeHtml(item[0])}" loading="lazy">` : ''}<h4>${escapeHtml(item[0])}</h4><p>${escapeHtml(item[1])}</p>${item[2] ? `<span class="badge">${escapeHtml(item[2])}</span>` : ''}</article>`; }).join('')}</div>`;
     sections.appendChild(element);
   });
 
