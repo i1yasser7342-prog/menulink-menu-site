@@ -37,11 +37,10 @@
 .kitchen-head span{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:1px}
 .kitchen-head h2{font-size:clamp(28px,4vw,40px);margin:10px 0 12px;letter-spacing:-.5px}
 .kitchen-head p{color:var(--muted);font-size:15px;line-height:1.8;margin:0}
-.kitchen-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.kitchen-grid figure{margin:0;border-radius:16px;overflow:hidden;aspect-ratio:3/4;position:relative;box-shadow:0 8px 24px rgba(24,45,36,.1)}
+.kitchen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.kitchen-grid figure{margin:0;border-radius:16px;overflow:hidden;aspect-ratio:4/5;position:relative;box-shadow:0 8px 24px rgba(24,45,36,.1)}
 .kitchen-grid img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
 .kitchen-grid figure:hover img{transform:scale(1.06)}
-.kitchen-grid figure:first-child{grid-row:span 2;aspect-ratio:3/6.6}
 
 .category-wrap{position:sticky;top:0;z-index:10;background:rgba(247,246,239,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .categories{display:flex;gap:10px;overflow-x:auto;padding:14px 0;scrollbar-width:none}
@@ -81,9 +80,9 @@ footer{background:var(--green-dark);color:#fff;padding:60px 0}
 .to-top{position:fixed;left:20px;bottom:20px;width:48px;height:48px;border-radius:50%;border:0;background:var(--green-dark);color:#fff;font-size:20px;box-shadow:var(--shadow);cursor:pointer;opacity:0;pointer-events:none;transition:.2s;z-index:20}
 .to-top.show{opacity:1;pointer-events:auto}
 
-@media(max-width:900px){
+@media(max-width:700px){
   .kitchen-grid{grid-template-columns:repeat(2,1fr)}
-  .kitchen-grid figure:first-child{grid-row:span 1;aspect-ratio:3/4;grid-column:span 2}
+  .kitchen-grid figure:last-child{grid-column:span 2}
 }
 @media(max-width:800px){
   .hero{min-height:88vh}
@@ -134,11 +133,9 @@ footer{background:var(--green-dark);color:#fff;padding:60px 0}
       <p>لمحة حقيقية من أطباق برو دايت — نفس الجودة التي تجدها في كل طبق يصلك.</p>
     </div>
     <div class="kitchen-grid">
-      <figure><img src="images/hero.jpg" alt="طبق رئيسي من برو دايت" loading="lazy"></figure>
-      <figure><img src="images/breakfast_29.jpg" alt="طبق فطور صحي من برو دايت" loading="lazy"></figure>
-      <figure><img src="images/breakfast_45.jpg" alt="طبق فطور من برو دايت" loading="lazy"></figure>
-      <figure><img src="images/breakfast_44.jpg" alt="ساندويتش مشوي من برو دايت" loading="lazy"></figure>
       <figure><img src="images/main_69.jpg" alt="طبق رئيسي من برو دايت" loading="lazy"></figure>
+      <figure><img src="images/breakfast_29.jpg" alt="طبق فطور صحي من برو دايت" loading="lazy"></figure>
+      <figure><img src="images/breakfast_42.jpg" alt="طبق فطور من برو دايت" loading="lazy"></figure>
     </div>
   </section>
 
