@@ -108,7 +108,7 @@ footer{background:var(--green-dark);color:#fff;padding:60px 0}
 </head>
 <body>
   <header class="hero">
-    <img class="hero-photo" src="images/hero.jpg" alt="أطباق برو دايت الصحية" loading="eager">
+    <img class="hero-photo" src="https://lh3.googleusercontent.com/d/1WHEaa6eks-Qb5vdWoKjr-9Fzwhy9b8hC=w1600" onerror="this.onerror=null;this.src='images/hero.jpg'" alt="أطباق برو دايت الصحية" loading="eager">
     <div class="hero-scrim"></div>
     <nav class="topbar shell">
       <a class="brand" href="#top" aria-label="العودة للأعلى">
@@ -133,9 +133,9 @@ footer{background:var(--green-dark);color:#fff;padding:60px 0}
       <p>لمحة حقيقية من أطباق برو دايت — نفس الجودة التي تجدها في كل طبق يصلك.</p>
     </div>
     <div class="kitchen-grid">
-      <figure><img src="images/main_69.jpg" alt="طبق رئيسي من برو دايت" loading="lazy"></figure>
-      <figure><img src="images/breakfast_29.jpg" alt="طبق فطور صحي من برو دايت" loading="lazy"></figure>
-      <figure><img src="images/breakfast_42.jpg" alt="طبق فطور من برو دايت" loading="lazy"></figure>
+      <figure><img src="https://lh3.googleusercontent.com/d/137oQbQWHmTYIrkyWYgzSeNFiLEWgQTt5=w900" onerror="this.onerror=null;this.src='images/main_69.jpg'" alt="طبق رئيسي من برو دايت" loading="lazy"></figure>
+      <figure><img src="https://lh3.googleusercontent.com/d/12vLEI7_3uVYPu2PTDXCRlFxkAOJyHCuJ=w900" onerror="this.onerror=null;this.src='images/breakfast_29.jpg'" alt="طبق فطور صحي من برو دايت" loading="lazy"></figure>
+      <figure><img src="https://lh3.googleusercontent.com/d/1mMEyqLXQbW0y7FNsU3wTul_9-1pdPnHf=w900" onerror="this.onerror=null;this.src='images/breakfast_42.jpg'" alt="طبق فطور من برو دايت" loading="lazy"></figure>
     </div>
   </section>
 
@@ -166,7 +166,7 @@ footer{background:var(--green-dark);color:#fff;padding:60px 0}
 const SUPABASE_KEY = 'sb_publishable_CVsIAE1KndWtqYLcEjAEDg_YhCQfrmZ';
 
 const CATEGORY_BANNERS = {
-  breakfast: 'images/breakfast_42.jpg'
+  breakfast: { cdn: 'https://lh3.googleusercontent.com/d/1mMEyqLXQbW0y7FNsU3wTul_9-1pdPnHf=w1200', fallback: 'images/breakfast_42.jpg' }
 };
 
 const fallbackMenu = [
@@ -223,7 +223,7 @@ function renderMenu(menu) {
     element.className = 'menu-section';
     element.id = section.id;
     const banner = CATEGORY_BANNERS[section.id];
-    element.innerHTML = `${banner ? `<div class="section-banner"><img src="${banner}" alt="${escapeHtml(section.name)}" loading="lazy"><div class="banner-scrim"><strong>${escapeHtml(section.name)}</strong></div></div>` : ''}<div class="menu-heading"><h3>${escapeHtml(section.name)}</h3><span>${escapeHtml(section.icon)}</span></div><div class="items">${section.items.map(item => `<article class="item"><h4>${escapeHtml(item[0])}</h4><p>${escapeHtml(item[1])}</p>${item[2] ? `<span class="badge">${escapeHtml(item[2])}</span>` : ''}</article>`).join('')}</div>`;
+    element.innerHTML = `${banner ? `<div class="section-banner"><img src="${banner.cdn}" onerror="this.onerror=null;this.src='${banner.fallback}'" alt="${escapeHtml(section.name)}" loading="lazy"><div class="banner-scrim"><strong>${escapeHtml(section.name)}</strong></div></div>` : ''}<div class="menu-heading"><h3>${escapeHtml(section.name)}</h3><span>${escapeHtml(section.icon)}</span></div><div class="items">${section.items.map(item => `<article class="item"><h4>${escapeHtml(item[0])}</h4><p>${escapeHtml(item[1])}</p>${item[2] ? `<span class="badge">${escapeHtml(item[2])}</span>` : ''}</article>`).join('')}</div>`;
     sections.appendChild(element);
   });
 
