@@ -123,6 +123,30 @@ There is no test account, no existing session token, and no service-role/imperso
 
 **GitHub/Vercel state, unchanged this round:** no files were modified in this session (only read-only Supabase/API calls), so no new commit was needed. Latest commit remains `296753f` on `main` at https://github.com/i1yasser7342-prog/menulink-menu-site. Confirmed via `list_deployments` that the Vercel production deployment `dpl_GvA3oD8yBCAqPB2qbbQcZJ3aYeL8` (the one deployed from this exact commit's file contents last round) is still the current, most recent production deployment (`state: READY`). Note: this Vercel project (`menulink-menu`) is **not** git-linked to the new GitHub repo — deployments are pushed by file content via the Vercel API, not by a git push triggering a build. "Vercel is on the latest commit" is therefore true by content-equality (verified: the deployed HTML matches what's in commit `296753f`), not by a git-integration link.
 
+## Session update 4 (2026-08-27) — RLS migration applied and verified live
+The user connected the Claude in Chrome extension to their real, already-logged-in Supabase Dashboard session. That gave direct access to the project's SQL Editor — something no prior session in this handoff had. Confirmed project identity explicitly via the SQL Editor's own breadcrumb and URL (`snntyrevgtyjjwnsdsrj`) before touching anything, and never navigated to or ran anything against any other project.
+
+**Found on inspection (before changing anything):** the live database already had 8 RLS policies on `menu_categories`/`menu_items` — anon SELECT (active-only), and admin INSERT/UPDATE/DELETE gated by a helper function `public.is_menu_admin()` (`select coalesce((auth.jwt() ->> 'email') = 'i1yasser@hotmail.com', false)`). None of this was reflected in this repo's history — it was added out-of-band at some point outside these sessions. The one real gap, exactly as this repo's earlier analysis predicted: the SELECT policy covered both `anon` and `authenticated`, so the admin could never see hidden (`is_active=false`) rows either.
+
+**Fix applied (additive only, nothing dropped, no data touched):**
+```sql
+create policy "Admin can read all menu categories" on public.menu_categories for select to authenticated using (is_menu_admin());
+create policy "Admin can read all menu items" on public.menu_items for select to authenticated using (is_menu_admin());
+```
+Ran directly in the Supabase SQL Editor via the browser session. `supabase_migration_fix_rls.sql` and `SUPABASE_SCHEMA.sql` have been rewritten to document the actual live policy set (10 policies total) rather than the originally-guessed one.
+
+**Verified live afterward, for real, via SQL-level role/JWT impersonation (`set role anon` / `set role authenticated` + `set request.jwt.claims`) — not a code review, not a REST-only test:**
+- `anon`: SELECT returns only `is_active=true` rows (32 items, 0 hidden visible); INSERT rejected (`42501`); UPDATE and DELETE on a real existing row both matched 0 rows (data verified unchanged after).
+- Random non-admin `authenticated` user: INSERT rejected (`42501`) — confirms write access is genuinely restricted to the one admin email, not open to all authenticated users.
+- Real admin (`i1yasser@hotmail.com`) via JWT claim: created a hidden test product (`is_active=false`) — admin could see it (count 1), anon could not (count 0). Edited its name and price. Toggled it to `is_active=true` — anon then saw the updated row. Created, edited, and deleted a test category the same way. Deleted both test rows afterward.
+- Final cleanup verified: exactly 32 items / 8 categories remain (original baseline), 0 leftover test rows by name/id pattern.
+
+**RLS requirements now fully confirmed live, not just in code:** anon read-active-only with zero write access; admin full read (including hidden) + full CRUD; write access is NOT open to all authenticated users, only the real admin email.
+
+**Still not tested (and cannot be, by design):** logging into `/admin` through the actual browser UI with the real password, and the resulting session/logout/persistence behavior — this session will not enter a password into any form regardless of who asks. The RLS layer verified above is what actually protects the data either way; the UI login is just how a human reaches it.
+
+No site code changed this round (this was a database-only fix), so no new Vercel deployment was needed — the live site already reflects this correctly since it queries the database directly.
+
 ## Recommended next work for Claude
 1. Treat this folder as the only working copy for this handoff.
 2. Inspect current/index.html and current/admin.html before changing anything.

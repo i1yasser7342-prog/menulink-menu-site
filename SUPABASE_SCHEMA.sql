@@ -1,4 +1,14 @@
--- Reference schema matching the current project state.
+-- Reference schema matching the current project state (verified live on
+-- project snntyrevgtyjjwnsdsrj on 2026-08-27 via the Supabase Dashboard SQL
+-- Editor). The live database uses a helper function, is_menu_admin(), for
+-- the admin check rather than inlining auth.jwt() in every policy:
+--   create function public.is_menu_admin() returns boolean language sql
+--   stable set search_path to 'public' as $$
+--     select coalesce((auth.jwt() ->> 'email') = 'i1yasser@hotmail.com', false)
+--   $$;
+-- The policies below are written with the inline check for portability,
+-- but on the live project they read `using (is_menu_admin())` instead --
+-- functionally identical.
 create table if not exists public.menu_categories (
   id text primary key,
   name_ar text not null,
