@@ -155,9 +155,17 @@ async function load(){
   render()
 }
 function render(){
-  $('categoriesList').innerHTML=cats.map(c=>`<div class="row"><div><strong>${esc(c.icon||'')} ${esc(c.name_ar)}</strong><small>${esc(c.id)} · ترتيب ${Number(c.sort_order)} · ${c.is_active?'ظاهر':'مخفي'}</small></div><div class="row-actions"><button onclick="editCat('${esc(c.id)}')">تعديل</button><button onclick="delCat('${esc(c.id)}')">حذف</button></div></div>`).join('');
-  $('itemsList').innerHTML=items.map(i=>`<div class="row"><div><strong>${esc(i.name_ar)} — ${Number(i.price)} ر.س</strong><small>${esc(cats.find(c=>c.id===i.category_id)?.name_ar||i.category_id)} · ${i.is_active?'ظاهر':'مخفي'}</small></div><div class="row-actions"><button onclick="editItem(${Number(i.id)})">تعديل</button><button onclick="delItem(${Number(i.id)})">حذف</button></div></div>`).join('')
+  $('categoriesList').innerHTML=cats.map(c=>`<div class="row"><div><strong>${esc(c.icon||'')} ${esc(c.name_ar)}</strong><small>${esc(c.id)} · ترتيب ${Number(c.sort_order)} · ${c.is_active?'ظاهر':'مخفي'}</small></div><div class="row-actions"><button data-act="editCat" data-id="${esc(c.id)}">تعديل</button><button data-act="delCat" data-id="${esc(c.id)}">حذف</button></div></div>`).join('');
+  $('itemsList').innerHTML=items.map(i=>`<div class="row"><div><strong>${esc(i.name_ar)} — ${Number(i.price)} ر.س</strong><small>${esc(cats.find(c=>c.id===i.category_id)?.name_ar||i.category_id)} · ${i.is_active?'ظاهر':'مخفي'}</small></div><div class="row-actions"><button data-act="editItem" data-id="${Number(i.id)}">تعديل</button><button data-act="delItem" data-id="${Number(i.id)}">حذف</button></div></div>`).join('')
 }
+function onListClick(e){
+  const b=e.target.closest('button[data-act]');if(!b)return;
+  const act=b.dataset.act,id=b.dataset.id;
+  if(act==='editCat')editCat(id);else if(act==='delCat')delCat(id);
+  else if(act==='editItem')editItem(Number(id));else if(act==='delItem')delItem(Number(id))
+}
+$('categoriesList').addEventListener('click',onListClick);
+$('itemsList').addEventListener('click',onListClick);
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
