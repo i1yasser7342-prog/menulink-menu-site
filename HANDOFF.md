@@ -147,6 +147,24 @@ Ran directly in the Supabase SQL Editor via the browser session. `supabase_migra
 
 No site code changed this round (this was a database-only fix), so no new Vercel deployment was needed — the live site already reflects this correctly since it queries the database directly.
 
+## Session update 5 (2026-08-27) — public menu redesign with real Prodiet photography
+Sourced from the "pro diet" Google Drive folder the user shared (read-only, `zahraagency2024@gmail.com` owner): three subfolders — فطور (breakfast), حلويات (desserts), اطباق رئيسيه (main dishes) — containing only professional food photography (generic filenames like `pro diet_NN.JPG`, `DSCxxxxx copy.jpg`). No logo, font, color-palette file, product names, or prices existed anywhere in the folder.
+
+**What was done:**
+- Downloaded and web-optimized 4 photos (`sips`, resized to 480px/quality 40, ~22-24KB each — originals were 4-12MB): one hero shot (burger, from اطباق رئيسيه), plus 3 more for a "من مطبخنا" gallery section and a banner on the "الفطور الصحي" category — the one category with a direct Drive-folder match. No new category or menu items were invented for the other Drive folders (`اطباق رئيسيه` has no counterpart in the DB schema, `حلويات` maps to the existing `dessert` category which already has no photo folder-to-item mapping possible) — per instruction, no data was guessed.
+- Redesigned `index.html`'s visual layer only: real-photo hero replacing the old CSS-illustration hero, refined color palette (deeper green `#233421`/`#4f6a3f`, warm cream) matching the photography, new gallery section, category banner. Supabase fetch/render logic, category/item data structure, and all IDs the JS depends on were left untouched.
+- **Removed all price display from the public menu** (index.html only) per explicit instruction — `renderMenu()` no longer renders a price field at all, even though `menu_items.price` still exists in Supabase and is still fully shown/editable in `admin.html` (internal tool, not the public menu).
+- `admin.html` was **not modified** in this round — untouched, still fully functional (verified live: connection test passes, no console errors).
+
+**Image hosting — real problem, real fix:** hotlinking the photos directly from Google's `lh3.googleusercontent.com` CDN worked via `curl` but failed unpredictably for actual browser `<img>` loads (confirmed live — the `onerror` fallback fired for 3 of 4 images on first real-browser test), so it was rejected as unfit for production. Embedding the images as base64 directly in the Vercel deploy call was attempted but is impractical with current tooling (the images have no line breaks, so reading their base64 into context costs ~6.5 tokens per character with a hard per-call cap — reconstructing ~96KB of base64 by hand across one tool call risked silent corruption). Resolved by making the `menulink-menu-site` GitHub repository **public** (user's explicit approval given after asking — no secrets in the repo, only the public Supabase anon key already exposed via the live site's own source either way) and serving the images via `raw.githubusercontent.com`, with `onerror` falling back to a locally-committed copy at `current/images/*.jpg` (not currently included in the Vercel deployment payload itself, so that specific fallback path would 404 on the live site if raw.githubusercontent.com ever went down — acceptable given raw.githubusercontent.com's proven reliability, but worth fixing by including `current/images/` in a future deploy if this ever becomes a real concern).
+
+**Verified live on production after deploy (dpl_CEiv8CHtRizpg6NvwKo2Z3ytguza), not just locally:**
+- `/` and `/admin`: HTTP 200, zero console errors.
+- All 5 image references (4 unique files, one reused) load successfully from `raw.githubusercontent.com`, none broken.
+- Real Supabase data renders (8 categories, all items), zero prices anywhere in the rendered text.
+- No horizontal overflow at 375px mobile width; gallery grid reflows to 2 columns.
+- `/admin` connection diagnostic still returns `HTTP 200 | Supabase متصل`.
+
 ## Recommended next work for Claude
 1. Treat this folder as the only working copy for this handoff.
 2. Inspect current/index.html and current/admin.html before changing anything.
