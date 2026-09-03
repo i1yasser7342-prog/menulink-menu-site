@@ -230,6 +230,59 @@ Checked Authentication → URL Configuration for this project: **Site URL was `h
 
 **Verified:** re-read the Redirect URLs list after saving — now shows all 4 entries (2 meal-subscriptions, 2 menulink-menu) with no other change. No file in this repo was touched for this session's fix; it was 100% a Supabase Dashboard configuration change.
 
+## Session update 10 (2026-09-03) — full migration to a dedicated, independent Supabase project
+
+Following on directly from Session update 9 (which fixed only the Auth-redirect symptom on the shared project), the user explicitly rejected that as a temporary fix and required true 100% infrastructure isolation: a brand-new, independent Supabase project for MenuLink only, with zero dependency on the shared project or the "وجباتي"/table-management apps going forward.
+
+**Phase 1–2 discovery (read-only, on the old shared project `snntyrevgtyjjwnsdsrj`):** confirmed via code inspection that MenuLink's entire backend footprint is exactly `menu_categories`, `menu_items`, the `is_menu_admin()` function, 10 RLS policies, and the `menu-images` storage bucket. Checked for entanglement with the other two apps via reverse-FK lookups (0 rows), triggers (0), and function self-containment — result: **zero shared data or relationships**, safe to migrate without any risk to the وجباتي or table-management apps. No data belonging to those apps was read, copied, modified, or deleted at any point.
+
+**Phase 3–8 (new project build-out):** created a new, dedicated Supabase project `menulink-menu` (ref `kzsofmkfublemcwtdplo`, region ap-northeast-1). Recreated exactly: `menu_categories` (8 rows) and `menu_items` (32 rows) via generated, verbatim `INSERT` statements (built with `string_agg(format(...))` from the live source data — not manually retyped, to eliminate transcription risk); the `is_menu_admin()` function; all 10 RLS policies matching the source exactly (no blanket `USING (true)`, mutations admin-only, public reads only where already public); the `menu-images` Storage bucket (public, 4 policies matching exactly). Post-migration verification: row counts (8/32), price sum (732.00), and orphan-FK count (0) all matched the source exactly. Auth: Site URL set to `https://menulink-menu.vercel.app`; Redirect URLs set to only `https://menulink-menu.vercel.app/*` and `.../admin` — no reference to meal-subscriptions.vercel.app anywhere in this new project. One Auth user created via **Send invitation** (not a manually-set password) for `i1yasser@hotmail.com`.
+
+**Phase 9 (code changes):** updated `SUPABASE_URL`/`SUPABASE_KEY` in `current/index.html` and `current/admin.html` to point at the new project's URL and new publishable key. A full-repo grep also found a stale reference in `current/bundle.html` (a non-deployed duplicate file) and fixed it too, so no file anywhere in the repo still references the old project or its key.
+
+**Phase 10:** no framework/build-step/TypeScript was introduced — both files remain plain static HTML, exactly as before.
+
+**Phase 11 (security review):** grepped the new/edited files — only the new project's `sb_publishable_...` key appears; no service-role key, DB password, or JWT secret exists in any file that reaches the browser.
+
+**Phase 12–13 (deploy + live testing):** committed and pushed the changes, then deployed to Vercel production (project `menulink-menu`, deployment `dpl_Ha9nSanLkWB1w9mrK17rB5YHb94D`), aliased to the live `menulink-menu.vercel.app` domain. Verified against the **published** site (not just local files):
+- Public menu loads all 8 categories/32 items with images, via `performance.getEntriesByType('resource')` confirming every REST call goes to `kzsofmkfublemcwtdplo.supabase.co` only.
+- `/admin` loads the login screen with no reference to the old project or `meal-subscriptions` anywhere in its HTML; a live REST call from the deployed page (using its own embedded `SUPABASE_URL`/`SUPABASE_KEY` constants) returned `HTTP 200` from the new project.
+- RLS re-verified live from the deployed page's own anon key: an anonymous `INSERT` into `menu_items` was rejected (`42501`, RLS policy violation); an anonymous `DELETE` of an existing row (`id=1`) returned 0 rows affected and the row was confirmed still present afterward — both mutation paths are protected.
+- Did not log into `/admin` with the real password in this session (per the standing rule against handling credentials); the admin invited via Supabase still needs to accept that invitation email to set a password before interactive login can be tested end-to-end.
+
+**Final report:**
+
+**A. Old Supabase project:** `snntyrevgtyjjwnsdsrj` — hosted MenuLink's `menu_categories`/`menu_items`/`is_menu_admin()`/RLS policies/`menu-images` bucket alongside two unrelated apps' tables. Left completely untouched: no deletions, no data moved out, no settings changed beyond Session update 9's earlier additive Redirect-URL entries (which remain, harmlessly unused by MenuLink now).
+
+**B. New Supabase project:** `menulink-menu` (ref `kzsofmkfublemcwtdplo`), region ap-northeast-1, Free plan. Contains only MenuLink's resources: 2 tables, 1 function, 10 RLS policies, 1 storage bucket (4 policies), independent Auth configuration, 1 invited admin user.
+
+| المورد | المصدر | الوجهة | النتيجة |
+|---|---|---|---|
+| Tables (`menu_categories`, `menu_items`) | `snntyrevgtyjjwnsdsrj` | `kzsofmkfublemcwtdplo` | ✅ نجاح — بنية مطابقة تمامًا |
+| Data (8 فئات + 32 منتج) | `snntyrevgtyjjwnsdsrj` | `kzsofmkfublemcwtdplo` | ✅ نجاح — تطابق كامل بالعدد ومجموع الأسعار وبدون سجلات يتيمة |
+| Functions (`is_menu_admin()`) | `snntyrevgtyjjwnsdsrj` | `kzsofmkfublemcwtdplo` | ✅ نجاح |
+| RLS (10 سياسات) | `snntyrevgtyjjwnsdsrj` | `kzsofmkfublemcwtdplo` | ✅ نجاح — تم التحقق حيًا من رفض الكتابة/الحذف من مستخدم مجهول |
+| Storage (`menu-images`، 4 سياسات) | `snntyrevgtyjjwnsdsrj` | `kzsofmkfublemcwtdplo` | ✅ نجاح — بنية وسياسات مطابقة، 0 ملفات (لا صور مرفوعة سابقًا عبر لوحة الإدارة) |
+| Users (المشرف الوحيد) | `snntyrevgtyjjwnsdsrj` | `kzsofmkfublemcwtdplo` | ⚠️ جزئي — تم إرسال دعوة بدلاً من نسخ كلمة المرور؛ يلزم قبول الدعوة وتعيين كلمة مرور جديدة |
+
+**D. Files modified:** `current/index.html`, `current/admin.html`, `current/bundle.html` (URL/key swap only in all three); this `HANDOFF.md`.
+
+**E. Security confirmations:** no Service Role Key/DB password/JWT secret in any published file — confirmed by direct grep; RLS enabled on both MenuLink tables and the storage bucket, live-verified against the deployed site to actually reject anonymous writes/deletes; MenuLink's code and live network traffic no longer reference `snntyrevgtyjjwnsdsrj` or `meal-subscriptions.vercel.app` anywhere.
+
+**F. PASS/FAIL:**
+| البند | النتيجة |
+|---|---|
+| Auth مستقل | ✅ PASS |
+| Database مستقلة | ✅ PASS |
+| Storage مستقل | ✅ PASS |
+| API requests مستقلة (تحقق حي من الشبكة) | ✅ PASS |
+| لا يوجد Redirect إلى وجباتي | ✅ PASS |
+| لا توجد مفاتيح Supabase قديمة مستخدمة | ✅ PASS (تم التأكد بالبحث الكامل في المستودع) |
+| الموقع المنشور يعمل | ✅ PASS |
+| لوحة التحكم تعمل (تحميل + اتصال) | ✅ PASS للتحميل والاتصال؛ ⚠️ تسجيل الدخول الفعلي لم يُختبر تفاعليًا (يتطلب كلمة مرور حقيقية لم تُدخل في هذه الجلسة) |
+
+**Open item, disclosed rather than silently closed:** the admin (`i1yasser@hotmail.com`) must open the Supabase invitation email for the **new** project and set a password before logging into the live `/admin` panel — this session never handled or set that password, per the standing credential rule.
+
 ## Recommended next work for Claude
 1. Treat this folder as the only working copy for this handoff.
 2. Inspect current/index.html and current/admin.html before changing anything.
