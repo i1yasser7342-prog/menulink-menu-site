@@ -41,6 +41,7 @@
     <button class="btn tab active" data-tab="items">المنتجات</button>
     <button class="btn tab" data-tab="categories">التصنيفات</button>
     <button class="btn tab" data-tab="content">المحتوى العام</button>
+    <button class="btn tab" data-tab="design">التصميم والأزرار</button>
   </div>
   <div class="grid">
     <div class="card">
@@ -72,6 +73,55 @@
         <div class="field"><label>نص الحقوق</label><input id="cFooterCopyright"></div>
 
         <button class="btn primary" type="submit" style="margin-top:16px">حفظ المحتوى العام</button>
+      </form>
+      <form id="designForm" class="hide">
+        <h3>التصميم والأزرار</h3>
+        <p class="muted">تحكم في الشعار والأيقونة والبنر وكل زر في الصفحة العامة. أي خانة تتركها كما هي تبقى على الوضع الافتراضي.</p>
+
+        <h3 style="margin-top:20px">الشعار</h3>
+        <div class="field"><label><input id="uLogoShow" type="checkbox" checked> إظهار الشعار في الأعلى</label></div>
+        <div class="field">
+          <label>صورة الشعار (اختياري — تستبدل الشعار الحالي)</label>
+          <img id="uLogoPreview" class="img-preview hide" alt="معاينة الشعار" style="max-height:90px;object-fit:contain">
+          <input id="uLogoFile" type="file" accept="image/jpeg,image/png,image/webp">
+          <button class="btn danger" type="button" id="uLogoDelete" style="width:fit-content">حذف صورة الشعار (الرجوع للشعار الأصلي)</button>
+        </div>
+        <div class="field"><label>ارتفاع الشعار (بكسل): <b id="uLogoHeightVal">44</b></label><input id="uLogoHeight" type="range" min="24" max="96" step="1" value="44"></div>
+
+        <h3 style="margin-top:20px">أيقونة الموقع (تظهر في تبويب المتصفح)</h3>
+        <div class="field">
+          <img id="uFaviconPreview" class="img-preview hide" alt="معاينة الأيقونة" style="max-height:64px;object-fit:contain">
+          <input id="uFaviconFile" type="file" accept="image/jpeg,image/png,image/webp">
+          <button class="btn danger" type="button" id="uFaviconDelete" style="width:fit-content">حذف الأيقونة</button>
+        </div>
+
+        <h3 style="margin-top:20px">مكان البنر وشكله</h3>
+        <p class="muted">صورة البنر نفسها ترفعها من «المحتوى العام».</p>
+        <div class="field"><label>مكان البنر</label><select id="uBannerPos"><option value="top">أعلى الصفحة فوق الهيدر</option><option value="below_header">أسفل الهيدر</option><option value="hidden">مخفي</option></select></div>
+        <div class="field"><label>ارتفاع البنر بالبكسل (0 = تلقائي حسب الصورة)</label><input id="uBannerHeight" type="number" min="0" max="700" step="10"></div>
+        <div class="field"><label>طريقة عرض الصورة</label><select id="uBannerFit"><option value="cover">تعبئة الشريط (قد يقصّ الحواف)</option><option value="contain">إظهار الصورة كاملة</option></select></div>
+        <div class="field"><label>رابط عند الضغط على البنر (اختياري)</label><input id="uBannerLink" type="url" placeholder="https://..."></div>
+
+        <h3 style="margin-top:20px">الأزرار والنصوص</h3>
+        <div class="field"><label><input id="uLangShow" type="checkbox" checked> إظهار زر اللغة</label></div>
+        <div class="field"><label>نص زر اللغة</label><input id="uLangText" placeholder="EN"></div>
+        <div class="field"><label><input id="uThemeShow" type="checkbox" checked> إظهار زر الليلي/النهاري</label></div>
+        <div class="field"><label>النمط الافتراضي للزوار الجدد</label><select id="uThemeDefault"><option value="auto">حسب جهاز الزائر</option><option value="light">نهاري</option><option value="dark">ليلي</option></select></div>
+        <div class="field"><label><input id="uSearchShow" type="checkbox" checked> إظهار خانة البحث</label></div>
+        <div class="field"><label>نص خانة البحث</label><input id="uSearchPh" placeholder="ابحث عن أي منتج في المنيو..."></div>
+        <div class="field"><label>نص تبويب الرئيسية</label><input id="uHomeTab" placeholder="الرئيسية"></div>
+        <div class="field"><label>نص زر «عرض الكل»</label><input id="uViewAll" placeholder="عرض الكل"></div>
+        <div class="field"><label><input id="uToTop" type="checkbox" checked> إظهار زر «العودة للأعلى»</label></div>
+        <div class="field"><label><input id="uFootPhoneShow" type="checkbox" checked> إظهار زر التواصل في الفوتر</label></div>
+        <div class="field"><label>نص زر التواصل في الفوتر</label><input id="uFootPhoneText" placeholder="تواصل معنا"></div>
+
+        <h3 style="margin-top:20px">الألوان والزخرفة</h3>
+        <div class="field"><label>اللون الأساسي (التبويب النشط والأزرار)</label><input id="uPrimary" type="color" value="#778f41"><button class="btn" type="button" id="uPrimaryReset" style="width:fit-content">الرجوع للافتراضي</button></div>
+        <div class="field"><label>اللون المميز (الأسعار)</label><input id="uAccent" type="color" value="#f37143"><button class="btn" type="button" id="uAccentReset" style="width:fit-content">الرجوع للافتراضي</button></div>
+        <div class="field"><label><input id="uPattern" type="checkbox" checked> إظهار نمط الشعار في الخلفية</label></div>
+        <div class="field"><label><input id="uFrame" type="checkbox" checked> إظهار البرواز الملوّن حول صور المنتجات</label></div>
+
+        <button class="btn primary" type="submit" style="margin-top:16px">حفظ التصميم والأزرار</button>
       </form>
       <form id="itemForm">
         <input type="hidden" id="itemId">
@@ -216,7 +266,7 @@ async function load(){
   cats=c.data;items=i.data;
   $('itemCategory').innerHTML=cats.map(x=>`<option value="${esc(x.id)}">${esc(x.name_ar)}</option>`).join('');
   render();
-  if(!s.error&&s.data){content=s.data;fillContentForm(content)}
+  if(!s.error&&s.data){content=s.data;fillContentForm(content);fillDesignForm(content.ui||{})}
 }
 function render(){
   $('categoriesList').innerHTML=cats.map(c=>{
@@ -240,7 +290,8 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   $('itemForm').classList.toggle('hide',tab!=='items');$('itemsList').classList.toggle('hide',tab!=='items');
   $('categoryForm').classList.toggle('hide',tab!=='categories');$('categoriesList').classList.toggle('hide',tab!=='categories');
   $('contentForm').classList.toggle('hide',tab!=='content');
-  $('listCard').classList.toggle('hide',tab==='content');
+  $('designForm').classList.toggle('hide',tab!=='design');
+  $('listCard').classList.toggle('hide',tab==='content'||tab==='design');
 });
 $('pickImage').onclick=()=>$('itemImageFile').click();
 $('itemImageDelete').onclick=()=>{$('itemImageUrl').value='';$('itemImageFile').value='';$('itemImagePreview').classList.add('hide');$('itemImagePreview').removeAttribute('src');msg($('itemImageStatus'),'ستُحذف الصورة عند الضغط على «حفظ المنتج».',true)};
@@ -306,6 +357,57 @@ $('contentForm').onsubmit=async e=>{
   if(error)return msg($('panelStatus'),human(error));
   await load();
   msg($('panelStatus'),'تم حفظ المحتوى العام',true)
+};
+
+/* ===== Design & buttons (stored in site_content.ui as JSON) ===== */
+['uLogo','uFavicon'].forEach(base=>wireImagePicker(base+'File',base+'Preview'));
+let removedLogo=false,removedFavicon=false,currentUi={};
+const setPrev=(id,url)=>{const el=$(id);if(url){el.src=url;el.classList.remove('hide')}else{el.classList.add('hide');el.removeAttribute('src')}};
+const on=(v)=>v!==false;
+function fillDesignForm(u){
+  currentUi=u||{};removedLogo=false;removedFavicon=false;
+  $('uLogoShow').checked=on(u.logo_show);setPrev('uLogoPreview',u.logo_url||'');
+  $('uLogoHeight').value=u.logo_height||44;$('uLogoHeightVal').textContent=$('uLogoHeight').value;
+  setPrev('uFaviconPreview',u.favicon_url||'');
+  $('uBannerPos').value=u.banner_position||'top';$('uBannerHeight').value=u.banner_height||0;$('uBannerFit').value=u.banner_fit||'cover';$('uBannerLink').value=u.banner_link||'';
+  $('uLangShow').checked=on(u.lang_show);$('uLangText').value=u.lang_text||'';
+  $('uThemeShow').checked=on(u.theme_show);$('uThemeDefault').value=u.theme_default||'auto';
+  $('uSearchShow').checked=on(u.search_show);$('uSearchPh').value=u.search_placeholder||'';
+  $('uHomeTab').value=u.home_tab_text||'';$('uViewAll').value=u.viewall_text||'';
+  $('uToTop').checked=on(u.totop_show);$('uFootPhoneShow').checked=on(u.footer_phone_show);$('uFootPhoneText').value=u.footer_phone_text||'';
+  $('uPrimary').value=u.color_primary||'#778f41';$('uAccent').value=u.color_accent||'#f37143';
+  $('uPattern').checked=on(u.pattern_show);$('uFrame').checked=on(u.frame_show)
+}
+$('uLogoHeight').oninput=()=>{$('uLogoHeightVal').textContent=$('uLogoHeight').value};
+$('uLogoDelete').onclick=()=>{removedLogo=true;$('uLogoFile').value='';setPrev('uLogoPreview','');msg($('panelStatus'),'سيتم حذف صورة الشعار عند الحفظ.',true)};
+$('uFaviconDelete').onclick=()=>{removedFavicon=true;$('uFaviconFile').value='';setPrev('uFaviconPreview','');msg($('panelStatus'),'ستُحذف الأيقونة عند الحفظ.',true)};
+$('uPrimaryReset').onclick=()=>{$('uPrimary').value='#778f41';currentUi.color_primary=null};
+$('uAccentReset').onclick=()=>{$('uAccent').value='#f37143';currentUi.color_accent=null};
+$('designForm').onsubmit=async e=>{
+  e.preventDefault();
+  msg($('panelStatus'),'جاري الحفظ...',true);
+  const u={...currentUi};
+  const put=(k,v)=>{if(v===''||v===null||v===undefined||v===0)delete u[k];else u[k]=v};
+  u.logo_show=$('uLogoShow').checked;u.lang_show=$('uLangShow').checked;u.theme_show=$('uThemeShow').checked;u.search_show=$('uSearchShow').checked;
+  u.totop_show=$('uToTop').checked;u.footer_phone_show=$('uFootPhoneShow').checked;u.pattern_show=$('uPattern').checked;u.frame_show=$('uFrame').checked;
+  put('logo_height',Number($('uLogoHeight').value)===44?0:Number($('uLogoHeight').value));
+  put('banner_position',$('uBannerPos').value==='top'?'':$('uBannerPos').value);
+  put('banner_height',Number($('uBannerHeight').value)||0);put('banner_fit',$('uBannerFit').value==='cover'?'':$('uBannerFit').value);
+  put('banner_link',$('uBannerLink').value.trim());
+  put('lang_text',$('uLangText').value.trim());put('theme_default',$('uThemeDefault').value==='auto'?'':$('uThemeDefault').value);
+  put('search_placeholder',$('uSearchPh').value.trim());put('home_tab_text',$('uHomeTab').value.trim());put('viewall_text',$('uViewAll').value.trim());
+  put('footer_phone_text',$('uFootPhoneText').value.trim());
+  const pr=$('uPrimary').value,ac=$('uAccent').value;
+  put('color_primary',pr.toLowerCase()==='#778f41'?'':pr);put('color_accent',ac.toLowerCase()==='#f37143'?'':ac);
+  try{
+    const lf=$('uLogoFile').files[0],ff=$('uFaviconFile').files[0];
+    if(lf)u.logo_url=await uploadSiteImage(lf,'logo',600);else if(removedLogo)delete u.logo_url;
+    if(ff)u.favicon_url=await uploadSiteImage(ff,'favicon',256);else if(removedFavicon)delete u.favicon_url;
+  }catch(err){return msg($('panelStatus'),'فشل رفع الصورة: '+human(err))}
+  const{error}=await db.from('site_content').update({ui:u}).eq('id',1);
+  if(error)return msg($('panelStatus'),human(error));
+  await load();
+  msg($('panelStatus'),'تم حفظ التصميم والأزرار',true)
 };
 $('itemImageFile').onchange=()=>{
   const file=$('itemImageFile').files[0];

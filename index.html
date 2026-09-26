@@ -216,6 +216,10 @@ footer{background:#383838 url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.
 .card:nth-child(4n+2) .media::before{background:linear-gradient(135deg,#84c58d 0%,#c9df81 50%,#7f8141 100%)}
 .card:nth-child(4n+3) .media::before{background:linear-gradient(135deg,#c9df81 0%,#f37143 55%,#d6dcf0 100%)}
 .card:nth-child(4n+4) .media::before{background:linear-gradient(135deg,#d6dcf0 0%,#84c58d 50%,#f37143 100%)}
+html.no-pattern body::before{display:none}
+html.no-frame .media::before{display:none}
+.brand-logo{display:block;width:auto;max-width:180px;object-fit:contain}
+.top-banner a{display:block}
 </style>
 </head>
 <body>
@@ -266,6 +270,7 @@ const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` 
 const $ = id => document.getElementById(id);
 let MENU = [];
 let SITE = {};
+let UI = {};
 
 function esc(value) {
   return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -358,7 +363,7 @@ function currentRoute() {
 }
 
 function renderTabs(route) {
-  const entries = [{ href: '#/', label: 'الرئيسية', active: route.type === 'home' }]
+  const entries = [{ href: '#/', label: UI.home_tab_text || 'الرئيسية', active: route.type === 'home' }]
     .concat(MENU.map(category => ({ href: `#/c/${encodeURIComponent(category.id)}`, label: category.name, active: route.type === 'category' && route.id === category.id })));
   const html = entries.map(entry => `<a class="tab${entry.active ? ' active' : ''}" href="${entry.href}">${esc(entry.label)}</a>`).join('');
   $('tabs').innerHTML = html;
@@ -378,7 +383,7 @@ function renderHome() {
     strips.push(`<section class="strip"><div class="strip-head"><h2>مميّز</h2></div><div class="scroller">${featured.map(card).join('')}</div><button class="strip-nav prev" type="button" aria-label="السابق">›</button><button class="strip-nav next" type="button" aria-label="التالي">‹</button></section>`);
   }
   MENU.forEach(category => {
-    strips.push(`<section class="strip"><div class="strip-head"><h2>${esc(category.name)}</h2><a href="#/c/${encodeURIComponent(category.id)}">عرض الكل</a></div><div class="scroller">${category.items.map(card).join('')}</div><button class="strip-nav prev" type="button" aria-label="السابق">›</button><button class="strip-nav next" type="button" aria-label="التالي">‹</button></section>`);
+    strips.push(`<section class="strip"><div class="strip-head"><h2>${esc(category.name)}</h2><a href="#/c/${encodeURIComponent(category.id)}">${esc(UI.viewall_text || 'عرض الكل')}</a></div><div class="scroller">${category.items.map(card).join('')}</div><button class="strip-nav prev" type="button" aria-label="السابق">›</button><button class="strip-nav next" type="button" aria-label="التالي">‹</button></section>`);
   });
   return `${welcome.length ? `<div class="welcome">${welcome.join('')}</div>` : ''}${strips.join('')}`;
 }
@@ -486,12 +491,68 @@ $('themeButton').addEventListener('click', () => {
   try { localStorage.setItem('pd-theme', next); } catch (error) {}
 });
 
+function darken(hex, amount) {
+  const n = parseInt(hex.slice(1), 16);
+  const f = v => Math.max(0, Math.round(v * (1 - amount))).toString(16).padStart(2, '0');
+  return '#' + f((n >> 16) & 255) + f((n >> 8) & 255) + f(n & 255);
+}
+function applyUI() {
+  const root = document.documentElement;
+  const hexOk = value => /^#[0-9a-fA-F]{6}$/.test(value || '');
+  if (hexOk(UI.color_primary)) { root.style.setProperty('--green', UI.color_primary); root.style.setProperty('--green-dark', darken(UI.color_primary, .25)); }
+  if (hexOk(UI.color_accent)) root.style.setProperty('--accent', UI.color_accent);
+  root.classList.toggle('no-pattern', UI.pattern_show === false);
+  root.classList.toggle('no-frame', UI.frame_show === false);
+  // logo
+  const mark = document.querySelector('.brand-mark');
+  if (UI.logo_show === false) mark.style.display = 'none';
+  const h = Number(UI.logo_height) || 0;
+  if (UI.logo_url) {
+    const img = document.createElement('img');
+    img.className = 'brand-logo'; img.alt = ''; img.src = UI.logo_url; img.style.height = (h || 44) + 'px';
+    mark.style.display = 'none'; mark.after(img);
+    if (UI.logo_show === false) img.style.display = 'none';
+  } else if (h) {
+    mark.style.setProperty('height', h + 'px', 'important'); mark.style.setProperty('width', Math.round(h * 1.28) + 'px', 'important');
+  }
+  // favicon
+  if (UI.favicon_url) {
+    let link = document.querySelector('link[rel="icon"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+    link.href = UI.favicon_url;
+  }
+  // banner placement, height, fit, link
+  const banner = $('topBanner');
+  if (UI.banner_position === 'below_header') $('siteHead').after(banner);
+  if (UI.banner_position === 'hidden') banner.dataset.off = '1';
+  const bannerImg = $('topBannerImg');
+  if (Number(UI.banner_height) > 0) { bannerImg.style.height = Number(UI.banner_height) + 'px'; bannerImg.style.maxHeight = 'none'; }
+  if (UI.banner_fit === 'contain') bannerImg.style.objectFit = 'contain';
+  if (UI.banner_link && /^https?:\/\//i.test(UI.banner_link)) {
+    const anchor = document.createElement('a'); anchor.href = UI.banner_link; anchor.target = '_blank'; anchor.rel = 'noopener';
+    bannerImg.replaceWith(anchor); anchor.appendChild(bannerImg);
+  }
+  // buttons
+  if (UI.lang_show === false) $('langButton').style.display = 'none';
+  if (UI.lang_text) $('langButton').textContent = UI.lang_text;
+  if (UI.theme_show === false) $('themeButton').style.display = 'none';
+  if (UI.search_placeholder) $('search').placeholder = UI.search_placeholder;
+  if (UI.totop_show === false) $('toTop').style.display = 'none';
+  if (UI.footer_phone_show === false) $('footerPhone').style.display = 'none';
+  else if (UI.footer_phone_text) $('footerPhone').textContent = UI.footer_phone_text;
+  // default theme for first-time visitors
+  let saved = null; try { saved = localStorage.getItem('pd-theme'); } catch (error) {}
+  if (!saved && (UI.theme_default === 'light' || UI.theme_default === 'dark')) applyTheme(UI.theme_default);
+}
+
 Promise.all([loadMenu().catch(error => { console.warn(error); return []; }), loadSite().catch(() => ({}))]).then(([menu, site]) => {
   MENU = menu;
   SITE = site;
+  UI = (SITE && typeof SITE.ui === 'object' && SITE.ui) || {};
   applySite();
-  $('searchWrap').hidden = !MENU.length;
-  if (SITE.hero_image_url) { $('topBannerImg').src = SITE.hero_image_url; $('topBanner').hidden = false; }
+  applyUI();
+  $('searchWrap').hidden = !MENU.length || UI.search_show === false;
+  if (SITE.hero_image_url && UI.banner_position !== 'hidden') { $('topBannerImg').src = SITE.hero_image_url; $('topBanner').hidden = false; }
   route();
 });
   </script>
