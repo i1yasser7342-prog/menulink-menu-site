@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f8f9eb" id="themeColor" />
+  <title>Prodiet — المنيو الصحي</title>
+  <meta name="description" content="منيو برو دايت الصحي" />
+  <script>(function(){try{var t=localStorage.getItem("pd-theme");if(!t)t=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="light"}})()</script>
+  <style>
+@font-face{font-family:"ThmanyahSans";src:url("https://raw.githubusercontent.com/i1yasser7342-prog/menulink-menu-site/main/current/fonts/thmanyah/thmanyahsans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSans";src:url("https://raw.githubusercontent.com/i1yasser7342-prog/menulink-menu-site/main/current/fonts/thmanyah/thmanyahsans-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSans";src:url("https://raw.githubusercontent.com/i1yasser7342-prog/menulink-menu-site/main/current/fonts/thmanyah/thmanyahsans-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSans";src:url("https://raw.githubusercontent.com/i1yasser7342-prog/menulink-menu-site/main/current/fonts/thmanyah/thmanyahsans-Black.woff2") format("woff2");font-weight:800 900;font-style:normal;font-display:swap}
+:root{--ink:#383838;--muted:#707066;--paper:#f8f9eb;--panel:#fff;--green:#778f41;--green-dark:#5f7434;--lime:#c9df81;--line:#d9dccb;--accent:#f37143;--shadow:0 10px 26px rgba(24,45,36,.12);--cw:clamp(156px,calc((100vw - 60px)/2),177px)}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"ThmanyahSans","Tajawal",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.shell{width:min(1200px,calc(100% - 24px));margin-inline:auto}
+[hidden]{display:none!important}
+
+.top-banner img{width:100%;height:clamp(110px,22vw,260px);object-fit:cover}
+
+.site-head{position:sticky;top:0;z-index:50;background:rgba(248,249,235,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.head-row{height:72px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font-size:22px;font-weight:800}
+.brand-copy{display:flex;flex-direction:column;line-height:1}
+.brand-copy strong{font-size:20px}
+.brand-copy small{font-size:9px;letter-spacing:2.4px;margin-top:6px;color:var(--muted)}
+.head-actions{display:flex;align-items:center;gap:10px}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:16px;font-weight:700;cursor:pointer;display:grid;place-items:center}
+.icon-btn:hover{background:var(--lime)}
+.menu-btn{display:none}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:2px 0 14px}
+.tab{border:0;background:transparent;border-radius:999px;padding:10px 20px;font-weight:700;font-size:15px;color:var(--ink);cursor:pointer;transition:background .2s,color .2s;white-space:nowrap}
+.tab:hover{background:rgba(201,223,129,.45)}
+.tab.active{background:var(--green);color:#fff}
+.drawer{position:absolute;top:72px;inset-inline:0;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:8px;display:flex;flex-direction:column;z-index:60}
+.drawer .tab{text-align:start;border-radius:12px;padding:12px 16px;font-size:16.8px}
+
+.search{position:relative;margin:22px auto 6px;max-width:760px}
+.search input{width:100%;height:56px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:0 50px 0 18px;font:500 16px inherit;color:var(--ink);outline:none}
+.search input:focus{border-color:var(--green)}
+.search svg{position:absolute;right:18px;top:19px;width:18px;height:18px;color:var(--green);pointer-events:none}
+
+.welcome{max-width:760px;margin:16px auto 0;text-align:center}
+.pill{display:inline-block;background:var(--lime);color:var(--green-dark);font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px}
+.tag-card{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.tag-card h1{margin:0 0 6px;font-size:clamp(22px,4vw,30px);line-height:1.2;letter-spacing:-.5px}
+.tag-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.8}
+.strip{margin-top:26px}
+.strip-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.strip h2{margin:0;font-size:20px;font-weight:800}
+.strip-head a{font-size:13px;font-weight:700;color:var(--green-dark)}
+.scroller{display:flex;gap:15px;overflow-x:auto;padding:4px 2px 16px;scrollbar-width:thin}
+.scroller .card{flex:none;width:204px}
+
+.cat-view h2{margin:26px 0 14px;font-size:20px;font-weight:800;text-align:start}
+.grid{display:grid;grid-template-columns:repeat(2,var(--cw));justify-content:center;gap:22px 10px}
+
+.card{position:relative;aspect-ratio:100/141;perspective:900px;cursor:pointer;outline:none}
+.card-inner{position:absolute;inset:0;transition:transform .55s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px rgba(24,45,36,.07);padding:7px;display:flex;flex-direction:column;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.card:focus-visible .face.front{border-color:var(--green);box-shadow:0 0 0 3px rgba(119,143,65,.3)}
+.back{transform:rotateY(180deg);padding:12px;background:linear-gradient(180deg,#fff,#f4f7e6);text-align:start;overflow:auto}
+.media{position:relative;aspect-ratio:4/5;width:100%;border-radius:10px;overflow:hidden;background:var(--paper);flex:none}
+.media img,.ph{width:100%;height:100%;object-fit:cover}
+.ph{display:grid;place-items:center;font-size:28px;color:var(--green);background:radial-gradient(circle at 30% 30%,rgba(201,223,129,.5),transparent 60%),var(--paper)}
+.en-name{position:absolute;top:8px;inset-inline-end:8px;max-width:70%;font-size:10px;font-weight:700;letter-spacing:.3px;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.7);direction:ltr;text-align:left;line-height:1.2}
+.name{position:absolute;inset-inline:0;bottom:0;padding:26px 9px 8px;background:linear-gradient(0deg,rgba(15,22,10,.72),rgba(15,22,10,.3) 60%,transparent);color:#fff;font-weight:800;font-size:15px;line-height:1.25;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.badge{position:absolute;top:8px;inset-inline-start:8px;background:linear-gradient(135deg,var(--lime),#a7c257);color:var(--green-dark);font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px;z-index:2}
+.price-row{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;min-height:0}
+.price-row .num{font-weight:900;font-size:clamp(15px,2.2vw,18px);color:var(--accent)}
+.chip{font-size:9px;font-weight:700;color:var(--green-dark);border:1px solid var(--green);border-radius:6px;padding:0 4px;line-height:14px}
+.back h3{margin:0 0 6px;font-size:16px;line-height:1.3}
+.back p{margin:0 0 8px;color:var(--muted);font-size:12.5px;line-height:1.7}
+.back .cat{display:inline-block;font-size:11px;font-weight:700;color:var(--green-dark);background:var(--lime);padding:2px 9px;border-radius:999px;margin-bottom:8px}
+.back .price-back{margin-top:auto;font-weight:900;color:var(--accent);font-size:17px}
+.back .hint{margin-top:6px;font-size:10.5px;color:var(--muted)}
+
+.empty{max-width:420px;margin:60px auto;text-align:center;color:var(--muted);line-height:1.9}
+.empty b{display:block;color:var(--ink);font-size:20px;margin-bottom:6px}
+
+footer{margin-top:60px;background:var(--green);color:#fff;padding:36px 0 30px}
+.foot{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.foot strong{font-size:24px}
+.foot p{margin:0;opacity:.8;font-size:14px}
+.foot a{font-weight:700;opacity:.95}
+.foot small{opacity:.6;font-size:12px;margin-top:6px}
+
+.to-top{position:fixed;left:16px;bottom:16px;width:44px;height:44px;border-radius:50%;border:0;background:var(--green);color:#fff;font-size:18px;box-shadow:var(--shadow);cursor:pointer;opacity:0;pointer-events:none;transition:.2s;z-index:40}
+.to-top.show{opacity:1;pointer-events:auto}
+
+@media(max-width:399px){:root{--cw:156px}}
+@media(min-width:400px){.grid{gap:26px 12px}}
+@media(min-width:400px) and (max-width:700px){:root{--cw:177px}}
+@media(min-width:701px){
+  :root{--cw:clamp(177px,calc(13.2vw + 76px),238px)}
+  .grid{grid-template-columns:repeat(3,var(--cw));gap:12px}
+  .scroller .card{width:220px}
+}
+@media(min-width:1000px){.grid{gap:24px}}
+@media(max-width:700px){
+  .menu-btn{display:grid}
+  .tabs{display:none}
+}
+@media(prefers-reduced-motion:reduce){.card-inner{transition:none}}
+  
+/* ProDiet identity: leaf-mark pattern spread across the page (Prodiet-Brand-Guidelines.pdf) */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22260%22 height=%22220%22 viewBox=%220 0 260 220%22%3E%3Cg transform=%22translate%2820 18%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%237f8141%22 fill-opacity=%220.16%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28150 18%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%2384c58d%22 fill-opacity=%220.26%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%2885 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23f37143%22 fill-opacity=%220.16%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28215 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23c9df81%22 fill-opacity=%220.55%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28-45 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23c9df81%22 fill-opacity=%220.55%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3C/svg%3E");background-size:260px 220px}
+.brand-mark{width:56px;height:44px;border-radius:0;font-size:0;background-color:transparent!important;background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22558%22 height=%22436%22 viewBox=%220 0 558 436%22%3E%3Cg transform=%22translate%280 0%29 scale%281%29 translate%28-561 -322%29%22 fill=%22%23383838%22 fill-opacity=%221%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:center!important;background-size:contain!important}
+footer{background:#383838 url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22260%22 height=%22220%22 viewBox=%220 0 260 220%22%3E%3Cg transform=%22translate%2820 18%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23f8f9eb%22 fill-opacity=%220.07%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28150 18%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23c9df81%22 fill-opacity=%220.09%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%2885 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%2384c58d%22 fill-opacity=%220.09%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28215 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23f8f9eb%22 fill-opacity=%220.06%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28-45 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23f8f9eb%22 fill-opacity=%220.06%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3C/svg%3E");background-size:260px 220px}
+
+.top-banner{background:#383838;line-height:0}
+.top-banner img{width:100%;height:auto;max-height:clamp(120px,26vw,320px);object-fit:cover;display:block}
+
+/* ===== UX polish: touch, motion, navigation ===== */
+html{-webkit-text-size-adjust:100%}
+a,button,.card{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:3px solid rgba(119,143,65,.55);outline-offset:2px;border-radius:8px}
+.card{transition:transform .18s ease}
+.card:active{transform:scale(.975)}
+@media(hover:hover){.card:hover .face.front{box-shadow:0 10px 26px rgba(24,45,36,.16)}.card:hover{transform:translateY(-3px)}}
+.tab{min-height:44px;display:inline-flex;align-items:center}
+.icon-btn{width:44px;height:44px}
+.scroller{scroll-snap-type:x proximity;scroll-padding-inline:2px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.scroller .card{scroll-snap-align:start}
+.strip{position:relative}
+.strip-nav{position:absolute;top:calc(50% - 8px);width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow);cursor:pointer;font-size:18px;color:var(--ink);display:none;z-index:3}
+.strip-nav:hover{background:var(--lime)}
+.strip-nav.prev{inset-inline-start:-14px}.strip-nav.next{inset-inline-end:-14px}
+@media(hover:hover) and (min-width:1000px){.strip-nav{display:grid;place-items:center}}
+#view,#results{animation:fadeUp .28s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.skel{display:flex;gap:15px;overflow:hidden;padding:4px 2px}
+.skel i{flex:none;width:var(--cw);aspect-ratio:100/141;border-radius:14px;background:linear-gradient(100deg,rgba(255,255,255,.55) 30%,rgba(255,255,255,.95) 50%,rgba(255,255,255,.55) 70%);background-size:200% 100%;animation:sh 1.2s linear infinite;border:1px solid var(--line)}
+@keyframes sh{to{background-position:-200% 0}}
+.search input{padding-inline-end:88px}
+.search .clear{position:absolute;inset-inline-start:10px;top:10px;width:36px;height:36px;border:0;border-radius:50%;background:var(--paper);color:var(--muted);font-size:18px;cursor:pointer;display:none}
+.search.has-q .clear{display:block}
+@media(max-width:700px){
+  .head-row{height:60px}
+  .brand-mark{width:46px;height:36px}
+  .menu-btn{display:none!important}
+  .tabs{display:flex!important;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding:0 12px 10px;margin-inline:0;width:100%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%)}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{scroll-snap-align:center;padding:8px 18px}
+  .drawer{display:none!important}
+  .to-top{bottom:calc(16px + env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){#view,#results{animation:none}.skel i{animation:none}.card{transition:none}.card:hover,.card:active{transform:none}}
+
+/* Brightness gradient top -> bottom (as in the Sunray reference) */
+body{background:transparent}
+html{background:#eceed4}
+body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(180deg,#fefff7 0%,#f8f9eb 38%,#eef0d6 72%,#e3e7c3 100%)}
+.site-head{background:linear-gradient(180deg,rgba(254,255,247,.96),rgba(248,249,235,.9))}
+.name{padding-top:44px;background:linear-gradient(0deg,rgba(15,22,10,.8) 0%,rgba(15,22,10,.42) 48%,rgba(15,22,10,0) 100%)}
+.media::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 35%)}
+
+/* nutrition facts on the card back */
+.nutri{margin-top:8px}
+.nutri h4{margin:0 0 6px;font-size:12px;font-weight:800;color:var(--green-dark)}
+.nutri-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.nutri-grid div{background:rgba(127,129,65,.12);border-radius:10px;padding:6px 4px;text-align:center;line-height:1.15}
+.nutri-grid b{display:block;font-size:16px;font-weight:900;color:var(--ink)}
+.nutri-grid span{display:block;font-size:10.5px;font-weight:700;color:var(--muted)}
+.nutri-grid small{font-size:9px;color:var(--muted)}
+.nutri .nutri-empty{font-size:11.5px;margin:0}
+/* day / night toggle */
+.theme-btn svg{width:20px;height:20px}
+.theme-btn .i-moon{display:none}
+[data-theme=dark] .theme-btn .i-sun{display:none}[data-theme=dark] .theme-btn .i-moon{display:block}
+body,.site-head,.search input,.tag-card,.face,.icon-btn,.tab{transition:background-color .3s,color .3s,border-color .3s}
+[data-theme=dark]{color-scheme:dark;--ink:#f8f9eb;--muted:#b7b9a0;--paper:#0d0d0d;--panel:#171717;--line:#2c2c2a;--green-dark:#c9df81;--shadow:0 10px 26px rgba(0,0,0,.45)}
+[data-theme=dark] html,html[data-theme=dark]{background:#000}
+[data-theme=dark] body::after{background:linear-gradient(180deg,#1c1c1b 0%,#111110 35%,#070707 70%,#000 100%)}
+[data-theme=dark] body::before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22260%22 height=%22220%22 viewBox=%220 0 260 220%22%3E%3Cg transform=%22translate%2820 18%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23f8f9eb%22 fill-opacity=%220.06%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28150 18%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23c9df81%22 fill-opacity=%220.09%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%2885 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%2384c58d%22 fill-opacity=%220.09%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28215 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23f8f9eb%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3Cg transform=%22translate%28-45 128%29 scale%280.19%29 translate%28-561 -322%29%22 fill=%22%23f8f9eb%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3C/svg%3E")}
+[data-theme=dark] .site-head{background:linear-gradient(180deg,rgba(28,28,27,.97),rgba(10,10,10,.94))}
+[data-theme=dark] .brand-mark{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22558%22 height=%22436%22 viewBox=%220 0 558 436%22%3E%3Cg transform=%22translate%280 0%29 scale%281%29 translate%28-561 -322%29%22 fill=%22%23f8f9eb%22 fill-opacity=%221%22%3E%3Cpath d=%22M561 390A279 279 0 0 0 840 668A279 279 0 0 0 561 390Z%22/%3E%3Cpath d=%22M1119 390A279 279 0 0 1 840 668A279 279 0 0 1 1119 390Z%22/%3E%3Cpath d=%22M840 322L887 369L840 416L793 369Z%22/%3E%3Crect x=%22804%22 y=%22417%22 width=%2272%22 height=%2262%22/%3E%3Crect x=%22561%22 y=%22696%22 width=%22558%22 height=%2262%22/%3E%3C/g%3E%3C/svg%3E")!important}
+[data-theme=dark] .tab.active,[data-theme=dark] .category.active{background:#c9df81;color:#383838}
+[data-theme=dark] .tab:hover{background:rgba(201,223,129,.16)}
+[data-theme=dark] .icon-btn,[data-theme=dark] .search input,[data-theme=dark] .tag-card,[data-theme=dark] .drawer{background:#161616;color:var(--ink)}
+[data-theme=dark] .icon-btn:hover{background:#2a2a28}
+[data-theme=dark] .pill{background:#c9df81;color:#383838}
+[data-theme=dark] .back{background:linear-gradient(180deg,#1f1f1e,#141413)}
+[data-theme=dark] .back .cat{color:#383838}
+[data-theme=dark] .chip{color:#c9df81;border-color:#c9df81}
+[data-theme=dark] .strip-nav{background:#161616;color:var(--ink);border-color:var(--line)}
+[data-theme=dark] .skel i{background:linear-gradient(100deg,rgba(255,255,255,.05) 30%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.05) 70%);background-size:200% 100%}
+[data-theme=dark] .search .clear{background:#2a2a28;color:var(--ink)}
+[data-theme=dark] .media::after{background:none}
+[data-theme=dark] .to-top{background:#c9df81;color:#383838}
+[data-theme=dark] .strip-head a{color:#c9df81}
+[data-theme=dark] footer{background-color:#000}
+[data-theme=dark] .face{background:#161616;border-color:#2c2c2a}
+[data-theme=dark] .nutri-grid div{background:rgba(201,223,129,.09)}
+</style>
+</head>
+<body>
+  <div class="top-banner" id="topBanner" hidden><img id="topBannerImg" alt="" decoding="async" fetchpriority="high"></div>
+
+  <header class="site-head" id="siteHead">
+    <div class="shell head-row">
+      <a class="brand" href="#/" aria-label="الرئيسية">
+        <span class="brand-mark" role="img" aria-label="Prodiet"></span>
+        <span class="brand-copy"><strong id="brandName">prodiet</strong><small id="brandTagline">HEALTHY FOOD</small></span>
+      </a>
+      <div class="head-actions">
+        <button class="icon-btn theme-btn" type="button" id="themeButton" aria-label="تبديل النمط الليلي والنهاري"><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+        <button class="icon-btn" type="button" id="langButton" aria-label="تغيير اللغة">EN</button>
+        <button class="icon-btn menu-btn" type="button" id="menuButton" aria-label="التصنيفات" aria-expanded="false">☰</button>
+      </div>
+      <div class="drawer" id="drawer" hidden></div>
+    </div>
+    <nav class="shell tabs" id="tabs" aria-label="تصنيفات المنيو"></nav>
+  </header>
+
+  <main class="shell">
+    <div class="search" id="searchWrap" hidden>
+      <input id="search" type="search" placeholder="ابحث عن أي منتج في المنيو..." aria-label="بحث في المنيو" autocomplete="off" enterkeyhint="search" inputmode="search">
+      <button class="clear" id="searchClear" type="button" aria-label="مسح البحث">×</button>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    </div>
+    <div id="view"><div class="skel" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div id="results" hidden></div>
+  </main>
+
+  <footer>
+    <div class="shell foot">
+      <strong id="footerBrand">prodiet</strong>
+      <p id="footerTagline">توازن يصنع يومك.</p>
+      <a href="tel:+966500000000" id="footerPhone">تواصل معنا</a>
+      <small id="footerCopyright">© 2026 جميع الحقوق محفوظة</small>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" aria-label="العودة للأعلى">↑</button>
+
+  <script>
+const SUPABASE_URL = 'https://kzsofmkfublemcwtdplo.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_C1hlUynNCI-5TyswvLS3Ew_Xp3nr40i';
+const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
+
+const $ = id => document.getElementById(id);
+let MENU = [];
+let SITE = {};
+
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+async function loadMenu() {
+  const [categoriesResponse, itemsResponse] = await Promise.all([
+    fetch(`${SUPABASE_URL}/rest/v1/menu_categories?select=id,name_ar,icon,sort_order&is_active=eq.true&order=sort_order.asc,id.asc`, { headers }),
+    fetch(`${SUPABASE_URL}/rest/v1/menu_items?select=category_id,name_ar,name_en,description_ar,details,price,badge_ar,image_url,calories,protein_g,carbs_g,fat_g,show_image,show_price,show_description,show_details,show_category,sort_order&is_active=eq.true&order=sort_order.asc,id.asc`, { headers })
+  ]);
+  if (!categoriesResponse.ok || !itemsResponse.ok) throw new Error('تعذر تحميل بيانات المنيو');
+  const categories = await categoriesResponse.json();
+  const items = await itemsResponse.json();
+  return categories
+    .map(category => ({
+      id: category.id,
+      name: category.name_ar,
+      icon: category.icon || '',
+      items: items.filter(item => item.category_id === category.id).map(item => ({
+        categoryId: category.id,
+        nutrition: { calories: item.calories, protein_g: item.protein_g, carbs_g: item.carbs_g, fat_g: item.fat_g },
+        name: item.name_ar,
+        nameEn: item.name_en || '',
+        description: item.show_description !== false ? (item.description_ar || '') : '',
+        details: item.show_details !== false ? (item.details || '') : '',
+        price: item.show_price === false ? '' : Number(item.price).toString(),
+        badge: item.badge_ar || '',
+        image: item.show_image !== false ? (item.image_url || '') : '',
+        categoryName: item.show_category !== false ? category.name_ar : '',
+        icon: category.icon || ''
+      }))
+    }))
+    .filter(category => category.items.length > 0);
+}
+
+async function loadSite() {
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/site_content?select=*&id=eq.1`, { headers });
+  if (!response.ok) return {};
+  return (await response.json())[0] || {};
+}
+
+function card(item) {
+  const media = item.image
+    ? `<img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy" decoding="async" width="400" height="500">`
+    : `<div class="ph" aria-hidden="true">${esc(item.icon)}</div>`;
+  const price = item.price ? `<span class="num">${esc(item.price)}</span><span class="chip">ر.س</span>` : '';
+  const facts = [['calories', 'سعرات حرارية', 'kcal'], ['protein_g', 'بروتين', 'جم'], ['carbs_g', 'كربوهيدرات', 'جم'], ['fat_g', 'دهون', 'جم']]
+    .filter(([key]) => item.nutrition[key] !== null && item.nutrition[key] !== undefined && item.nutrition[key] !== '')
+    .map(([key, label, unit]) => `<div><b>${esc(Number(item.nutrition[key]).toString())}</b><span>${label}</span><small>${unit}</small></div>`).join('');
+  const back = `
+      ${item.categoryName ? `<span class="cat">${esc(item.categoryName)}</span>` : ''}
+      <h3>${esc(item.name)}</h3>
+      ${item.description ? `<p>${esc(item.description)}</p>` : ''}
+      ${item.details ? `<p>${esc(item.details)}</p>` : ''}
+      <div class="nutri"><h4>المعلومات الغذائية</h4>${facts ? `<div class="nutri-grid">${facts}</div>` : `<p class="nutri-empty">لم تُضف المعلومات الغذائية لهذا المنتج بعد.</p>`}</div>
+      ${item.price ? `<div class="price-back">${esc(item.price)} ر.س</div>` : ''}
+      <div class="hint">اضغط للرجوع</div>`;
+  return `<article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="${esc(item.name)}">
+    <div class="card-inner">
+      <div class="face front">
+        <div class="media">${media}
+          ${item.badge ? `<span class="badge">${esc(item.badge)}</span>` : ''}
+          ${item.nameEn ? `<span class="en-name">${esc(item.nameEn)}</span>` : ''}
+          <div class="name">${esc(item.name)}</div>
+        </div>
+        <div class="price-row">${price}</div>
+      </div>
+      <div class="face back">${back}</div>
+    </div>
+  </article>`;
+}
+
+document.addEventListener('click', event => {
+  const target = event.target.closest('.card');
+  if (!target) return;
+  const flipped = target.classList.toggle('flipped');
+  target.setAttribute('aria-pressed', String(flipped));
+});
+document.addEventListener('keydown', event => {
+  if ((event.key === 'Enter' || event.key === ' ') && event.target.classList.contains('card')) {
+    event.preventDefault();
+    event.target.click();
+  }
+});
+
+function currentRoute() {
+  const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
+  const match = hash.match(/^\/c\/(.+)$/);
+  return match ? { type: 'category', id: match[1] } : { type: 'home' };
+}
+
+function renderTabs(route) {
+  const entries = [{ href: '#/', label: 'الرئيسية', active: route.type === 'home' }]
+    .concat(MENU.map(category => ({ href: `#/c/${encodeURIComponent(category.id)}`, label: category.name, active: route.type === 'category' && route.id === category.id })));
+  const html = entries.map(entry => `<a class="tab${entry.active ? ' active' : ''}" href="${entry.href}">${esc(entry.label)}</a>`).join('');
+  $('tabs').innerHTML = html;
+  $('drawer').innerHTML = html;
+}
+
+function renderHome() {
+  const welcome = [];
+  if (SITE.hero_eyebrow) welcome.push(`<span class="pill">${esc(SITE.hero_eyebrow)}</span>`);
+  const title = [SITE.hero_title_line1, SITE.hero_title_line2].filter(Boolean).join(' ');
+  if (title || SITE.hero_text) {
+    welcome.push(`<div class="tag-card">${title ? `<h1>${esc(title)}</h1>` : ''}${SITE.hero_text ? `<p>${esc(SITE.hero_text)}</p>` : ''}</div>`);
+  }
+  const strips = [];
+  const featured = MENU.flatMap(category => category.items).filter(item => item.badge);
+  if (featured.length) {
+    strips.push(`<section class="strip"><div class="strip-head"><h2>مميّز</h2></div><div class="scroller">${featured.map(card).join('')}</div><button class="strip-nav prev" type="button" aria-label="السابق">›</button><button class="strip-nav next" type="button" aria-label="التالي">‹</button></section>`);
+  }
+  MENU.forEach(category => {
+    strips.push(`<section class="strip"><div class="strip-head"><h2>${esc(category.name)}</h2><a href="#/c/${encodeURIComponent(category.id)}">عرض الكل</a></div><div class="scroller">${category.items.map(card).join('')}</div><button class="strip-nav prev" type="button" aria-label="السابق">›</button><button class="strip-nav next" type="button" aria-label="التالي">‹</button></section>`);
+  });
+  return `${welcome.length ? `<div class="welcome">${welcome.join('')}</div>` : ''}${strips.join('')}`;
+}
+
+function renderCategory(id) {
+  const category = MENU.find(entry => entry.id === id);
+  if (!category) return `<div class="empty"><b>القسم غير موجود</b><a class="pill" href="#/">العودة للرئيسية</a></div>`;
+  return `<section class="cat-view"><h2>${esc(category.name)}</h2><div class="grid">${category.items.map(card).join('')}</div></section>`;
+}
+
+function route() {
+  const current = currentRoute();
+  closeDrawer();
+  clearSearch();
+  renderTabs(current);
+  if (!MENU.length) {
+    $('view').innerHTML = `<div class="empty"><b>المنيو قيد التحضير</b>سيتم إضافة التصنيفات والأطباق قريبًا.</div>`;
+    return;
+  }
+  $('view').innerHTML = current.type === 'home' ? renderHome() : renderCategory(current.id);
+  const key = location.hash || '#/';
+  window.scrollTo(0, cameFromLink ? 0 : (scrollMemory[key] || 0));
+  cameFromLink = false;
+  const active = document.querySelector('#tabs .tab.active');
+  if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+}
+history.scrollRestoration = 'manual';
+const scrollMemory = {};
+let cameFromLink = false;
+document.addEventListener('click', event => { if (event.target.closest('a[href^="#/"]')) cameFromLink = true; }, true);
+let scrollTick = 0;
+window.addEventListener('scroll', () => { if (scrollTick) return; scrollTick = requestAnimationFrame(() => { scrollMemory[location.hash || '#/'] = scrollY; scrollTick = 0; }); }, { passive: true });
+window.addEventListener('hashchange', route);
+
+function clearSearch() {
+  $('search').value = '';
+  $('searchWrap').classList.remove('has-q');
+  $('results').hidden = true;
+  $('results').innerHTML = '';
+  $('view').hidden = false;
+}
+let searchTimer = 0;
+$('search').addEventListener('input', () => { $('searchWrap').classList.toggle('has-q', !!$('search').value); clearTimeout(searchTimer); searchTimer = setTimeout(runSearch, 120); });
+$('searchClear').addEventListener('click', () => { clearSearch(); $('search').focus(); });
+$('search').addEventListener('keydown', event => { if (event.key === 'Escape') clearSearch(); });
+function runSearch() {
+  const query = $('search').value.trim().toLowerCase();
+  if (!query) { $('results').hidden = true; $('results').innerHTML = ''; $('view').hidden = false; return; }
+  const matches = MENU.flatMap(category => category.items).filter(item => `${item.name} ${item.nameEn} ${item.description}`.toLowerCase().includes(query));
+  $('view').hidden = true;
+  $('results').hidden = false;
+  $('results').innerHTML = matches.length
+    ? `<section class="cat-view"><h2>نتائج البحث (${matches.length})</h2><div class="grid">${matches.map(card).join('')}</div></section>`
+    : `<div class="empty"><b>لا توجد نتائج مطابقة</b>جرّب كلمة أخرى.</div>`;
+}
+
+function closeDrawer() { $('drawer').hidden = true; $('menuButton').setAttribute('aria-expanded', 'false'); }
+$('menuButton').addEventListener('click', event => {
+  event.stopPropagation();
+  $('drawer').hidden = !$('drawer').hidden;
+  $('menuButton').setAttribute('aria-expanded', String(!$('drawer').hidden));
+});
+document.addEventListener('click', event => { if (!event.target.closest('#drawer')) closeDrawer(); });
+$('langButton').addEventListener('click', () => alert('يمكن إضافة النسخة الإنجليزية من لوحة الإدارة لاحقًا.'));
+const toTop = $('toTop');
+window.addEventListener('scroll', () => toTop.classList.toggle('show', scrollY > 500), { passive: true });
+toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+function applyText(id, value) {
+  if (value === null || value === undefined) return;
+  const element = $(id);
+  if (value === '') { element.style.display = 'none'; return; }
+  element.textContent = value;
+}
+function applySite() {
+  applyText('brandName', SITE.brand_name);
+  applyText('brandTagline', SITE.brand_tagline);
+  applyText('footerBrand', SITE.brand_name);
+  applyText('footerTagline', SITE.footer_tagline);
+  applyText('footerCopyright', SITE.footer_copyright);
+  if (SITE.footer_phone) $('footerPhone').href = `tel:${SITE.footer_phone}`;
+}
+
+
+document.addEventListener('click', event => {
+  const nav = event.target.closest('.strip-nav');
+  if (!nav) return;
+  const scroller = nav.parentElement.querySelector('.scroller');
+  const dir = nav.classList.contains('next') ? 1 : -1;
+  // RTL: scrollLeft is negative and grows toward the "next" (left) side
+  scroller.scrollBy({ left: -dir * Math.round(scroller.clientWidth * 0.85), behavior: 'smooth' });
+});
+
+
+const themeMeta = document.getElementById('themeColor');
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  if (themeMeta) themeMeta.content = theme === 'dark' ? '#000000' : '#f8f9eb';
+  $('themeButton').setAttribute('aria-pressed', String(theme === 'dark'));
+}
+applyTheme(document.documentElement.dataset.theme || 'light');
+$('themeButton').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try { localStorage.setItem('pd-theme', next); } catch (error) {}
+});
+
+Promise.all([loadMenu().catch(error => { console.warn(error); return []; }), loadSite().catch(() => ({}))]).then(([menu, site]) => {
+  MENU = menu;
+  SITE = site;
+  applySite();
+  $('searchWrap').hidden = !MENU.length;
+  if (SITE.hero_image_url) { $('topBannerImg').src = SITE.hero_image_url; $('topBanner').hidden = false; }
+  route();
+});
+  </script>
+</body>
+</html>
