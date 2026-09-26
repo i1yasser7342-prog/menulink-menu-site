@@ -112,6 +112,8 @@
         <div class="field"><label>نص تبويب الرئيسية</label><input id="uHomeTab" placeholder="الرئيسية"></div>
         <div class="field"><label>نص زر «عرض الكل»</label><input id="uViewAll" placeholder="عرض الكل"></div>
         <div class="field"><label><input id="uToTop" type="checkbox" checked> إظهار زر «العودة للأعلى»</label></div>
+        <div class="field"><label><input id="uCalcShow" type="checkbox" checked> إظهار حاسبة السعرات (الزر العائم وزر «+» على المنتجات)</label></div>
+        <div class="field"><label>اسم حاسبة السعرات</label><input id="uCalcText" placeholder="حاسبة السعرات"></div>
         <div class="field"><label><input id="uFootPhoneShow" type="checkbox" checked> إظهار زر التواصل في الفوتر</label></div>
         <div class="field"><label>نص زر التواصل في الفوتر</label><input id="uFootPhoneText" placeholder="تواصل معنا"></div>
 
@@ -374,7 +376,7 @@ function fillDesignForm(u){
   $('uThemeShow').checked=on(u.theme_show);$('uThemeDefault').value=u.theme_default||'auto';
   $('uSearchShow').checked=on(u.search_show);$('uSearchPh').value=u.search_placeholder||'';
   $('uHomeTab').value=u.home_tab_text||'';$('uViewAll').value=u.viewall_text||'';
-  $('uToTop').checked=on(u.totop_show);$('uFootPhoneShow').checked=on(u.footer_phone_show);$('uFootPhoneText').value=u.footer_phone_text||'';
+  $('uToTop').checked=on(u.totop_show);$('uCalcShow').checked=on(u.calc_show);$('uCalcText').value=u.calc_text||'';$('uFootPhoneShow').checked=on(u.footer_phone_show);$('uFootPhoneText').value=u.footer_phone_text||'';
   $('uPrimary').value=u.color_primary||'#778f41';$('uAccent').value=u.color_accent||'#f37143';
   $('uPattern').checked=on(u.pattern_show);$('uFrame').checked=on(u.frame_show)
 }
@@ -389,14 +391,14 @@ $('designForm').onsubmit=async e=>{
   const u={...currentUi};
   const put=(k,v)=>{if(v===''||v===null||v===undefined||v===0)delete u[k];else u[k]=v};
   u.logo_show=$('uLogoShow').checked;u.lang_show=$('uLangShow').checked;u.theme_show=$('uThemeShow').checked;u.search_show=$('uSearchShow').checked;
-  u.totop_show=$('uToTop').checked;u.footer_phone_show=$('uFootPhoneShow').checked;u.pattern_show=$('uPattern').checked;u.frame_show=$('uFrame').checked;
+  u.totop_show=$('uToTop').checked;u.calc_show=$('uCalcShow').checked;u.footer_phone_show=$('uFootPhoneShow').checked;u.pattern_show=$('uPattern').checked;u.frame_show=$('uFrame').checked;
   put('logo_height',Number($('uLogoHeight').value)===44?0:Number($('uLogoHeight').value));
   put('banner_position',$('uBannerPos').value==='top'?'':$('uBannerPos').value);
   put('banner_height',Number($('uBannerHeight').value)||0);put('banner_fit',$('uBannerFit').value==='cover'?'':$('uBannerFit').value);
   put('banner_link',$('uBannerLink').value.trim());
   put('lang_text',$('uLangText').value.trim());put('theme_default',$('uThemeDefault').value==='auto'?'':$('uThemeDefault').value);
   put('search_placeholder',$('uSearchPh').value.trim());put('home_tab_text',$('uHomeTab').value.trim());put('viewall_text',$('uViewAll').value.trim());
-  put('footer_phone_text',$('uFootPhoneText').value.trim());
+  put('footer_phone_text',$('uFootPhoneText').value.trim());put('calc_text',$('uCalcText').value.trim());
   const pr=$('uPrimary').value,ac=$('uAccent').value;
   put('color_primary',pr.toLowerCase()==='#778f41'?'':pr);put('color_accent',ac.toLowerCase()==='#f37143'?'':ac);
   try{

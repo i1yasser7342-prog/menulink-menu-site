@@ -220,6 +220,68 @@ html.no-pattern body::before{display:none}
 html.no-frame .media::before{display:none}
 .brand-logo{display:block;width:auto;max-width:180px;object-fit:contain}
 .top-banner a{display:block}
+
+/* ===== Calorie calculator ===== */
+.price-row{position:relative}
+.add-btn{position:absolute;inset-inline-end:2px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:0;background:var(--lime);color:#383838;font-size:22px;font-weight:800;line-height:1;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s}
+.add-btn:active{transform:translateY(-50%) scale(.88)}
+.add-btn.pulse{animation:pop .4s ease}
+@keyframes pop{50%{transform:translateY(-50%) scale(1.3);background:var(--accent);color:#fff}}
+.calc-fab{position:fixed;inset-inline-start:16px;bottom:calc(72px + env(safe-area-inset-bottom));z-index:45;display:flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 18px;background:#383838;color:#f8f9eb;font:800 14px inherit;box-shadow:var(--shadow);cursor:pointer}
+.calc-fab svg{width:20px;height:20px}
+.calc-fab b{background:var(--accent);color:#fff;border-radius:999px;min-width:22px;height:22px;padding:0 6px;display:grid;place-items:center;font-size:12px}
+.calc-fab b:empty,.calc-fab b[data-n="0"]{display:none}
+.calc-overlay{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.calc-overlay.open{opacity:1;pointer-events:auto}
+.calc-panel{width:min(560px,100%);max-height:90vh;overflow:auto;background:var(--panel);color:var(--ink);border-radius:22px 22px 0 0;padding:16px 18px calc(22px + env(safe-area-inset-bottom));transform:translateY(24px);transition:transform .25s;box-shadow:0 -10px 40px rgba(0,0,0,.3)}
+.calc-overlay.open .calc-panel{transform:none}
+@media(min-width:700px){.calc-overlay{align-items:center}.calc-panel{border-radius:22px}}
+.calc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.calc-head h2{margin:0;font-size:20px}
+.calc-close{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:20px;cursor:pointer}
+.calc-tabs{display:flex;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:14px}
+.calc-tabs button{flex:1;border:0;background:transparent;color:var(--ink);border-radius:10px;padding:10px;font:700 14px inherit;cursor:pointer}
+.calc-tabs button.on{background:var(--green);color:#fff}
+[data-theme=dark] .calc-tabs button.on{background:#c9df81;color:#383838}
+.calc-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.calc-row{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:8px 10px}
+.calc-row img,.calc-row .ph{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none;font-size:18px}
+.calc-row .nm{flex:1;min-width:0;font-weight:700;font-size:14px;line-height:1.3}
+.calc-row .nm small{display:block;color:var(--muted);font-weight:500;font-size:11.5px}
+.calc-row .nm small.warn{color:var(--accent)}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--ink);font-size:16px;font-weight:800;cursor:pointer}
+.qty span{min-width:18px;text-align:center;font-weight:800}
+.calc-empty{text-align:center;color:var(--muted);padding:26px 8px;line-height:1.9}
+.totals{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 12px}
+.totals div{background:rgba(127,129,65,.13);border-radius:12px;padding:10px 4px;text-align:center}
+.totals b{display:block;font-size:20px;font-weight:900}
+.totals span{font-size:11px;color:var(--muted);font-weight:700}
+.totals .kcal{grid-column:1/-1;background:var(--green);color:#fff}
+.totals .kcal span{color:rgba(255,255,255,.85)}
+[data-theme=dark] .totals .kcal{background:#c9df81;color:#383838}
+[data-theme=dark] .totals .kcal span{color:#383838}
+.macro-bar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin:4px 0 6px;background:var(--line)}
+.macro-bar i{display:block;height:100%}
+.macro-legend{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-bottom:12px}
+.goal-bar{height:12px;border-radius:99px;background:var(--line);overflow:hidden;margin:6px 0}
+.goal-bar i{display:block;height:100%;background:var(--green);border-radius:99px;transition:width .3s}
+.goal-bar.over i{background:var(--accent)}
+[data-theme=dark] .goal-bar i{background:#c9df81}
+.calc-note{font-size:11.5px;color:var(--muted);line-height:1.8;margin:8px 0 0}
+.calc-actions{display:flex;gap:8px;margin-top:8px}
+.calc-btn{flex:1;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:11px;font:700 14px inherit;cursor:pointer}
+.calc-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+[data-theme=dark] .calc-btn.primary{background:#c9df81;color:#383838;border-color:#c9df81}
+.calc-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.calc-form label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.calc-form label.full{grid-column:1/-1}
+.calc-form input,.calc-form select{height:46px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font:600 16px inherit;padding:0 12px;outline:none}
+.calc-form input:focus,.calc-form select:focus{border-color:var(--green)}
+.calc-result{margin-top:14px;border:1px solid var(--line);border-radius:16px;padding:14px}
+.calc-result .big{font-size:30px;font-weight:900;color:var(--accent)}
+.calc-result .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.calc-result .row:last-child{border:0}
 </style>
 </head>
 <body>
@@ -260,6 +322,19 @@ html.no-frame .media::before{display:none}
     </div>
   </footer>
 
+
+  <button class="calc-fab" id="calcFab" type="button" aria-haspopup="dialog" aria-controls="calcOverlay" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></svg>
+    <span id="calcFabText">حاسبة السعرات</span><b id="calcFabCount" data-n="0"></b>
+  </button>
+  <div class="calc-overlay" id="calcOverlay" aria-hidden="true">
+    <div class="calc-panel" role="dialog" aria-modal="true" aria-labelledby="calcTitle">
+      <div class="calc-head"><h2 id="calcTitle">حاسبة السعرات</h2><button class="calc-close" id="calcClose" type="button" aria-label="إغلاق">×</button></div>
+      <div class="calc-tabs" role="tablist"><button type="button" class="on" data-ctab="meal" role="tab">وجبتي</button><button type="button" data-ctab="need" role="tab">احتياجي اليومي</button></div>
+      <div id="calcMeal"></div>
+      <div id="calcNeed" hidden></div>
+    </div>
+  </div>
   <button class="to-top" id="toTop" aria-label="العودة للأعلى">↑</button>
 
   <script>
@@ -271,6 +346,7 @@ const $ = id => document.getElementById(id);
 let MENU = [];
 let SITE = {};
 let UI = {};
+let CALC_ON = true;
 
 function esc(value) {
   return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -279,7 +355,7 @@ function esc(value) {
 async function loadMenu() {
   const [categoriesResponse, itemsResponse] = await Promise.all([
     fetch(`${SUPABASE_URL}/rest/v1/menu_categories?select=id,name_ar,icon,sort_order&is_active=eq.true&order=sort_order.asc,id.asc`, { headers }),
-    fetch(`${SUPABASE_URL}/rest/v1/menu_items?select=category_id,name_ar,name_en,description_ar,details,price,badge_ar,image_url,calories,protein_g,carbs_g,fat_g,show_image,show_price,show_description,show_details,show_category,sort_order&is_active=eq.true&order=sort_order.asc,id.asc`, { headers })
+    fetch(`${SUPABASE_URL}/rest/v1/menu_items?select=id,category_id,name_ar,name_en,description_ar,details,price,badge_ar,image_url,calories,protein_g,carbs_g,fat_g,show_image,show_price,show_description,show_details,show_category,sort_order&is_active=eq.true&order=sort_order.asc,id.asc`, { headers })
   ]);
   if (!categoriesResponse.ok || !itemsResponse.ok) throw new Error('تعذر تحميل بيانات المنيو');
   const categories = await categoriesResponse.json();
@@ -290,6 +366,7 @@ async function loadMenu() {
       name: category.name_ar,
       icon: category.icon || '',
       items: items.filter(item => item.category_id === category.id).map(item => ({
+        id: item.id,
         categoryId: category.id,
         nutrition: { calories: item.calories, protein_g: item.protein_g, carbs_g: item.carbs_g, fat_g: item.fat_g },
         name: item.name_ar,
@@ -336,7 +413,7 @@ function card(item) {
           ${item.nameEn ? `<span class="en-name">${esc(item.nameEn)}</span>` : ''}
           <div class="name">${esc(item.name)}</div>
         </div>
-        <div class="price-row">${price}</div>
+        <div class="price-row">${price}${CALC_ON ? `<button class="add-btn" type="button" data-add="${esc(item.id)}" aria-label="أضف ${esc(item.name)} إلى حاسبة السعرات" title="أضف إلى حاسبة السعرات">+</button>` : ''}</div>
       </div>
       <div class="face back">${back}</div>
     </div>
@@ -344,6 +421,7 @@ function card(item) {
 }
 
 document.addEventListener('click', event => {
+  if (event.target.closest('.add-btn')) return;
   const target = event.target.closest('.card');
   if (!target) return;
   const flipped = target.classList.toggle('flipped');
@@ -545,12 +623,154 @@ function applyUI() {
   if (!saved && (UI.theme_default === 'light' || UI.theme_default === 'dark')) applyTheme(UI.theme_default);
 }
 
+/* ===== Calorie calculator ===== */
+const PLATE_KEY = 'pd-plate', PROFILE_KEY = 'pd-profile';
+let plate = {}, profile = {};
+try { plate = JSON.parse(localStorage.getItem(PLATE_KEY) || '{}') || {}; profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}') || {}; } catch (error) {}
+const savePlate = () => { try { localStorage.setItem(PLATE_KEY, JSON.stringify(plate)); } catch (error) {} };
+const saveProfile = () => { try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch (error) {} };
+const num = value => (value === null || value === undefined || value === '' || isNaN(Number(value))) ? null : Number(value);
+const round1 = value => Math.round(value * 10) / 10;
+function itemById(id) { for (const category of MENU) for (const item of category.items) if (String(item.id) === String(id)) return item; return null; }
+function plateTotals() {
+  const total = { calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0 };
+  let missing = 0, count = 0;
+  Object.entries(plate).forEach(([id, qty]) => {
+    const item = itemById(id); if (!item) return;
+    count += qty;
+    const n = item.nutrition;
+    if (num(n.calories) === null) { missing += 1; return; }
+    Object.keys(total).forEach(key => { total[key] += (num(n[key]) || 0) * qty; });
+  });
+  return { total, missing, count };
+}
+function renderFab() {
+  const { count } = plateTotals();
+  $('calcFabCount').textContent = count || '';
+  $('calcFabCount').dataset.n = String(count);
+}
+function goalKcal() {
+  const p = profile;
+  const age = num(p.age), weight = num(p.weight), height = num(p.height);
+  if (!age || !weight || !height) return null;
+  const bmr = 10 * weight + 6.25 * height - 5 * age + (p.gender === 'female' ? -161 : 5);
+  const factor = { '1.2': 1.2, '1.375': 1.375, '1.55': 1.55, '1.725': 1.725, '1.9': 1.9 }[p.activity] || 1.375;
+  const tdee = bmr * factor;
+  const adjust = p.goal === 'lose' ? -500 : p.goal === 'gain' ? 300 : 0;
+  const floor = p.gender === 'female' ? 1200 : 1500;
+  const target = Math.max(floor, tdee + adjust);
+  const bmi = weight / Math.pow(height / 100, 2);
+  return { bmr, tdee, target, bmi };
+}
+function bmiLabel(bmi) { return bmi < 18.5 ? 'نحافة' : bmi < 25 ? 'وزن طبيعي' : bmi < 30 ? 'وزن زائد' : 'سمنة'; }
+function renderMeal() {
+  const { total, missing, count } = plateTotals();
+  const rows = Object.entries(plate).map(([id, qty]) => {
+    const item = itemById(id); if (!item) return '';
+    const kcal = num(item.nutrition.calories);
+    const img = item.image ? `<img src="${esc(item.image)}" alt="" loading="lazy" decoding="async">` : `<div class="ph" aria-hidden="true">${esc(item.icon)}</div>`;
+    return `<div class="calc-row">${img}<div class="nm">${esc(item.name)}<small class="${kcal === null ? 'warn' : ''}">${kcal === null ? 'لا توجد بيانات غذائية — غير محسوب' : `${esc(String(kcal))} kcal للواحد`}</small></div>
+      <div class="qty"><button type="button" data-q="-1" data-id="${esc(id)}" aria-label="إنقاص">−</button><span>${qty}</span><button type="button" data-q="1" data-id="${esc(id)}" aria-label="زيادة">+</button></div></div>`;
+  }).join('');
+  if (!rows) { $('calcMeal').innerHTML = `<div class="calc-empty"><b>وجبتك فارغة</b><br>اضغط زر «+» الموجود على أي منتج لإضافته وحساب سعراته.</div>`; return; }
+  const kcalFromMacros = total.protein_g * 4 + total.carbs_g * 4 + total.fat_g * 9;
+  const pct = value => kcalFromMacros ? Math.round(value / kcalFromMacros * 100) : 0;
+  const pP = pct(total.protein_g * 4), pC = pct(total.carbs_g * 4), pF = kcalFromMacros ? Math.max(0, 100 - pP - pC) : 0;
+  const goal = goalKcal();
+  const goalHtml = goal ? (() => {
+    const ratio = total.calories / goal.target, left = goal.target - total.calories;
+    return `<div><b>${Math.round(total.calories)}</b> من هدفك <b>${Math.round(goal.target)}</b> kcal يوميًا (${Math.round(ratio * 100)}%)</div>
+      <div class="goal-bar ${ratio > 1 ? 'over' : ''}"><i style="width:${Math.min(100, ratio * 100)}%"></i></div>
+      <div class="calc-note">${left >= 0 ? `المتبقي لهذا اليوم: ${Math.round(left)} kcal` : `تجاوزت هدفك بمقدار ${Math.round(-left)} kcal`}</div>`;
+  })() : `<div class="calc-note">أدخل بياناتك في تبويب «احتياجي اليومي» لمقارنة وجبتك بهدفك.</div>`;
+  $('calcMeal').innerHTML = `<div class="calc-list">${rows}</div>
+    <div class="totals"><div class="kcal"><b>${Math.round(total.calories)}</b><span>سعرة حرارية (kcal) — ${count} صنف</span></div>
+      <div><b>${round1(total.protein_g)}</b><span>بروتين جم</span></div><div><b>${round1(total.carbs_g)}</b><span>كربوهيدرات جم</span></div><div><b>${round1(total.fat_g)}</b><span>دهون جم</span></div></div>
+    ${kcalFromMacros ? `<div class="macro-bar" aria-hidden="true"><i style="width:${pP}%;background:#84c58d"></i><i style="width:${pC}%;background:#c9df81"></i><i style="width:${pF}%;background:#f37143"></i></div>
+    <div class="macro-legend"><span>🟢 بروتين ${pP}%</span><span>🟡 كربوهيدرات ${pC}%</span><span>🟠 دهون ${pF}%</span></div>` : ''}
+    ${missing ? `<div class="calc-note" style="color:var(--accent)">${missing} صنف بلا بيانات غذائية، لذلك لم يُحتسب.</div>` : ''}
+    ${goalHtml}
+    <div class="calc-actions"><button class="calc-btn" type="button" id="calcClear">تفريغ الوجبة</button><button class="calc-btn primary" type="button" id="calcToNeed">احسب احتياجي اليومي</button></div>
+    <p class="calc-note">الأرقام تقريبية وتعتمد على البيانات المدخلة لكل منتج.</p>`;
+}
+function renderNeed() {
+  const p = profile, g = goalKcal();
+  const sel = (value, current) => value === current ? ' selected' : '';
+  $('calcNeed').innerHTML = `<form class="calc-form" id="needForm" novalidate>
+      <label>الجنس<select id="pGender"><option value="male"${sel('male', p.gender || 'male')}>ذكر</option><option value="female"${sel('female', p.gender)}>أنثى</option></select></label>
+      <label>العمر (سنة)<input id="pAge" type="number" inputmode="numeric" min="10" max="100" value="${esc(p.age || '')}"></label>
+      <label>الوزن (كجم)<input id="pWeight" type="number" inputmode="decimal" min="30" max="300" step="0.1" value="${esc(p.weight || '')}"></label>
+      <label>الطول (سم)<input id="pHeight" type="number" inputmode="numeric" min="120" max="230" value="${esc(p.height || '')}"></label>
+      <label class="full">مستوى النشاط<select id="pActivity">
+        <option value="1.2"${sel('1.2', p.activity)}>قليل الحركة (عمل مكتبي)</option><option value="1.375"${sel('1.375', p.activity || '1.375')}>نشاط خفيف (1–3 أيام رياضة)</option>
+        <option value="1.55"${sel('1.55', p.activity)}>نشاط متوسط (3–5 أيام)</option><option value="1.725"${sel('1.725', p.activity)}>نشاط عالٍ (6–7 أيام)</option><option value="1.9"${sel('1.9', p.activity)}>نشاط شديد (رياضي/عمل بدني)</option></select></label>
+      <label class="full">هدفك<select id="pGoal"><option value="lose"${sel('lose', p.goal)}>إنقاص الوزن</option><option value="maintain"${sel('maintain', p.goal || 'maintain')}>تثبيت الوزن</option><option value="gain"${sel('gain', p.goal)}>زيادة الوزن</option></select></label>
+    </form>
+    <div id="needResult">${g ? needResultHtml(g) : '<div class="calc-note">أدخل العمر والوزن والطول لحساب احتياجك.</div>'}</div>
+    <p class="calc-note">المعادلة المستخدمة: Mifflin-St Jeor. الأرقام تقديرية وليست بديلًا عن استشارة مختص تغذية.</p>`;
+}
+function needResultHtml(g) {
+  return `<div class="calc-result"><div>هدفك اليومي</div><div class="big">${Math.round(g.target)} <small>kcal</small></div>
+    <div class="row"><span>معدل الحرق الأساسي (BMR)</span><b>${Math.round(g.bmr)} kcal</b></div>
+    <div class="row"><span>احتياجك مع النشاط (TDEE)</span><b>${Math.round(g.tdee)} kcal</b></div>
+    <div class="row"><span>مؤشر كتلة الجسم (BMI)</span><b>${round1(g.bmi)} — ${bmiLabel(g.bmi)}</b></div></div>`;
+}
+function readProfile() {
+  profile = { gender: $('pGender').value, age: $('pAge').value, weight: $('pWeight').value, height: $('pHeight').value, activity: $('pActivity').value, goal: $('pGoal').value };
+  saveProfile();
+  const g = goalKcal();
+  $('needResult').innerHTML = g ? needResultHtml(g) : '<div class="calc-note">أدخل العمر والوزن والطول لحساب احتياجك.</div>';
+}
+let lastFocus = null;
+function openCalc(tab) {
+  lastFocus = document.activeElement;
+  $('calcOverlay').classList.add('open'); $('calcOverlay').setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  showCalcTab(tab || 'meal');
+  $('calcClose').focus();
+}
+function closeCalc() {
+  $('calcOverlay').classList.remove('open'); $('calcOverlay').setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+function showCalcTab(tab) {
+  document.querySelectorAll('[data-ctab]').forEach(button => { const on = button.dataset.ctab === tab; button.classList.toggle('on', on); button.setAttribute('aria-selected', String(on)); });
+  $('calcMeal').hidden = tab !== 'meal'; $('calcNeed').hidden = tab !== 'need';
+  if (tab === 'meal') renderMeal(); else renderNeed();
+}
+document.addEventListener('click', event => {
+  const add = event.target.closest('.add-btn');
+  if (add) {
+    event.stopPropagation();
+    const id = add.dataset.add; plate[id] = (plate[id] || 0) + 1; savePlate(); renderFab();
+    add.classList.remove('pulse'); void add.offsetWidth; add.classList.add('pulse');
+    return;
+  }
+  const q = event.target.closest('[data-q]');
+  if (q) {
+    const id = q.dataset.id; plate[id] = (plate[id] || 0) + Number(q.dataset.q);
+    if (plate[id] <= 0) delete plate[id];
+    savePlate(); renderFab(); renderMeal(); return;
+  }
+  if (event.target.closest('#calcClear')) { plate = {}; savePlate(); renderFab(); renderMeal(); return; }
+  if (event.target.closest('#calcToNeed')) { showCalcTab('need'); return; }
+  const tab = event.target.closest('[data-ctab]'); if (tab) { showCalcTab(tab.dataset.ctab); return; }
+  if (event.target === $('calcOverlay') || event.target.closest('#calcClose')) closeCalc();
+});
+document.addEventListener('input', event => { if (event.target.closest('#needForm')) readProfile(); });
+document.addEventListener('change', event => { if (event.target.closest('#needForm')) readProfile(); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape' && $('calcOverlay').classList.contains('open')) closeCalc(); });
+$('calcFab').addEventListener('click', () => openCalc('meal'));
+
 Promise.all([loadMenu().catch(error => { console.warn(error); return []; }), loadSite().catch(() => ({}))]).then(([menu, site]) => {
   MENU = menu;
   SITE = site;
   UI = (SITE && typeof SITE.ui === 'object' && SITE.ui) || {};
+  CALC_ON = UI.calc_show !== false;
   applySite();
   applyUI();
+  if (CALC_ON) { $('calcFab').hidden = false; if (UI.calc_text) $('calcFabText').textContent = UI.calc_text; if (UI.calc_text) $('calcTitle').textContent = UI.calc_text; renderFab(); }
   $('searchWrap').hidden = !MENU.length || UI.search_show === false;
   if (SITE.hero_image_url && UI.banner_position !== 'hidden') { $('topBannerImg').src = SITE.hero_image_url; $('topBanner').hidden = false; }
   route();
