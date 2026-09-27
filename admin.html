@@ -378,7 +378,9 @@ function fillDesignForm(u){
   $('uHomeTab').value=u.home_tab_text||'';$('uViewAll').value=u.viewall_text||'';
   $('uToTop').checked=on(u.totop_show);$('uCalcShow').checked=on(u.calc_show);$('uCalcText').value=u.calc_text||'';$('uFootPhoneShow').checked=on(u.footer_phone_show);$('uFootPhoneText').value=u.footer_phone_text||'';
   $('uPrimary').value=u.color_primary||'#778f41';$('uAccent').value=u.color_accent||'#f37143';
-  $('uPattern').checked=on(u.pattern_show);$('uFrame').checked=on(u.frame_show)
+  $('uPattern').checked=on(u.pattern_show);$('uFrame').checked=on(u.frame_show);
+  const br=Array.isArray(u.branches)?u.branches:[];
+  for(let i=0;i<3;i++){$('uBranch'+(i+1)+'Name').value=br[i]?.name||'';$('uBranch'+(i+1)+'Url').value=br[i]?.url||''}
 }
 $('uLogoHeight').oninput=()=>{$('uLogoHeightVal').textContent=$('uLogoHeight').value};
 $('uLogoDelete').onclick=()=>{removedLogo=true;$('uLogoFile').value='';setPrev('uLogoPreview','');msg($('panelStatus'),'سيتم حذف صورة الشعار عند الحفظ.',true)};
@@ -392,6 +394,8 @@ $('designForm').onsubmit=async e=>{
   const put=(k,v)=>{if(v===''||v===null||v===undefined||v===0)delete u[k];else u[k]=v};
   u.logo_show=$('uLogoShow').checked;u.lang_show=$('uLangShow').checked;u.theme_show=$('uThemeShow').checked;u.search_show=$('uSearchShow').checked;
   u.totop_show=$('uToTop').checked;u.calc_show=$('uCalcShow').checked;u.footer_phone_show=$('uFootPhoneShow').checked;u.pattern_show=$('uPattern').checked;u.frame_show=$('uFrame').checked;
+  const branches=[1,2,3].map(i=>({name:$('uBranch'+i+'Name').value.trim(),url:$('uBranch'+i+'Url').value.trim()})).filter(b=>b.name&&b.url);
+  if(branches.length)u.branches=branches;else delete u.branches;
   put('logo_height',Number($('uLogoHeight').value)===44?0:Number($('uLogoHeight').value));
   put('banner_position',$('uBannerPos').value==='top'?'':$('uBannerPos').value);
   put('banner_height',Number($('uBannerHeight').value)||0);put('banner_fit',$('uBannerFit').value==='cover'?'':$('uBannerFit').value);
