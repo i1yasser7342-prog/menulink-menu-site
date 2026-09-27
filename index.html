@@ -34,6 +34,7 @@ img{display:block;max-width:100%}
 .head-actions{display:flex;align-items:center;gap:10px}
 .icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:16px;font-weight:700;cursor:pointer;display:grid;place-items:center}
 .icon-btn:hover{background:var(--lime)}
+#searchToggle.on{background:var(--lime)}
 .menu-btn{display:none}
 .tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:2px 0 14px}
 .tab{border:0;background:transparent;border-radius:999px;padding:10px 20px;font-weight:700;font-size:15px;color:var(--ink);cursor:pointer;transition:background .2s,color .2s;white-space:nowrap}
@@ -43,9 +44,8 @@ img{display:block;max-width:100%}
 .drawer .tab{text-align:start;border-radius:12px;padding:12px 16px;font-size:16.8px}
 
 .search{position:relative;margin:22px auto 6px;max-width:760px}
-.search input{width:100%;height:56px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:0 50px 0 18px;font:500 16px inherit;color:var(--ink);outline:none}
+.search input{width:100%;height:56px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:0 18px;font:500 16px inherit;color:var(--ink);outline:none}
 .search input:focus{border-color:var(--green)}
-.search svg{position:absolute;right:18px;top:19px;width:18px;height:18px;color:var(--green);pointer-events:none}
 
 .welcome{max-width:760px;margin:16px auto 0;text-align:center}
 .pill{display:inline-block;background:var(--lime);color:var(--green-dark);font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px}
@@ -141,8 +141,10 @@ a,button,.card{-webkit-tap-highlight-color:transparent;touch-action:manipulation
 .skel{display:flex;gap:15px;overflow:hidden;padding:4px 2px}
 .skel i{flex:none;width:var(--cw);aspect-ratio:100/141;border-radius:14px;background:linear-gradient(100deg,rgba(255,255,255,.55) 30%,rgba(255,255,255,.95) 50%,rgba(255,255,255,.55) 70%);background-size:200% 100%;animation:sh 1.2s linear infinite;border:1px solid var(--line)}
 @keyframes sh{to{background-position:-200% 0}}
-.search input{padding-inline-end:88px}
-.search .clear{position:absolute;inset-inline-start:10px;top:10px;width:36px;height:36px;border:0;border-radius:50%;background:var(--paper);color:var(--muted);font-size:18px;cursor:pointer;display:none}
+.search{overflow:hidden;max-height:0;margin:0 auto;transition:max-height .28s ease,margin .28s ease}
+.search.open{max-height:100px;margin:22px auto 6px}
+.search input{padding-inline-end:46px}
+.search .clear{position:absolute;inset-inline-end:10px;top:10px;width:36px;height:36px;border:0;border-radius:50%;background:var(--paper);color:var(--muted);font-size:18px;cursor:pointer;display:none}
 .search.has-q .clear{display:block}
 @media(max-width:700px){
   .head-row{height:60px}
@@ -195,6 +197,7 @@ body,.site-head,.search input,.tag-card,.face,.icon-btn,.tab{transition:backgrou
 [data-theme=dark] .strip-nav{background:#161616;color:var(--ink);border-color:var(--line)}
 [data-theme=dark] .skel i{background:linear-gradient(100deg,rgba(255,255,255,.05) 30%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.05) 70%);background-size:200% 100%}
 [data-theme=dark] .search .clear{background:#2a2a28;color:var(--ink)}
+[data-theme=dark] #searchToggle.on{background:#2a2a28}
 [data-theme=dark] .media::after{background:none}
 [data-theme=dark] .to-top{background:#c9df81;color:#383838}
 [data-theme=dark] .strip-head a{color:#c9df81}
@@ -294,6 +297,7 @@ html.no-frame .media::before{display:none}
         <span class="brand-copy"><strong id="brandName">prodiet</strong><small id="brandTagline">HEALTHY FOOD</small></span>
       </a>
       <div class="head-actions">
+        <button class="icon-btn" type="button" id="searchToggle" aria-label="بحث" aria-expanded="false" aria-controls="searchWrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
         <button class="icon-btn theme-btn" type="button" id="themeButton" aria-label="تبديل النمط الليلي والنهاري"><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
         <button class="icon-btn" type="button" id="langButton" aria-label="تغيير اللغة">EN</button>
         <button class="icon-btn menu-btn" type="button" id="menuButton" aria-label="التصنيفات" aria-expanded="false">☰</button>
@@ -307,7 +311,6 @@ html.no-frame .media::before{display:none}
     <div class="search" id="searchWrap" hidden>
       <input id="search" type="search" placeholder="ابحث عن أي منتج في المنيو..." aria-label="بحث في المنيو" autocomplete="off" enterkeyhint="search" inputmode="search">
       <button class="clear" id="searchClear" type="button" aria-label="مسح البحث">×</button>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
     </div>
     <div id="view"><div class="skel" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
     <div id="results" hidden></div>
@@ -506,7 +509,7 @@ function clearSearch() {
 let searchTimer = 0;
 $('search').addEventListener('input', () => { $('searchWrap').classList.toggle('has-q', !!$('search').value); clearTimeout(searchTimer); searchTimer = setTimeout(runSearch, 120); });
 $('searchClear').addEventListener('click', () => { clearSearch(); $('search').focus(); });
-$('search').addEventListener('keydown', event => { if (event.key === 'Escape') clearSearch(); });
+$('search').addEventListener('keydown', event => { if (event.key === 'Escape') { if ($('search').value) clearSearch(); else closeSearch(); } });
 function runSearch() {
   const query = $('search').value.trim().toLowerCase();
   if (!query) { $('results').hidden = true; $('results').innerHTML = ''; $('view').hidden = false; return; }
@@ -517,6 +520,20 @@ function runSearch() {
     ? `<section class="cat-view"><h2>نتائج البحث (${matches.length})</h2><div class="grid">${matches.map(card).join('')}</div></section>`
     : `<div class="empty"><b>لا توجد نتائج مطابقة</b>جرّب كلمة أخرى.</div>`;
 }
+
+function openSearch() {
+  $('searchWrap').hidden = false; requestAnimationFrame(() => $('searchWrap').classList.add('open'));
+  $('searchToggle').classList.add('on'); $('searchToggle').setAttribute('aria-expanded', 'true');
+  $('search').focus();
+}
+function closeSearch() {
+  $('searchWrap').classList.remove('open');
+  $('searchToggle').classList.remove('on'); $('searchToggle').setAttribute('aria-expanded', 'false');
+  clearSearch();
+  setTimeout(() => { if (!$('searchWrap').classList.contains('open')) $('searchWrap').hidden = true; }, 280);
+}
+$('searchToggle').addEventListener('click', () => { $('searchWrap').classList.contains('open') ? closeSearch() : openSearch(); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape' && $('searchWrap').classList.contains('open') && !$('search').value) closeSearch(); });
 
 function closeDrawer() { $('drawer').hidden = true; $('menuButton').setAttribute('aria-expanded', 'false'); }
 $('menuButton').addEventListener('click', event => {
@@ -771,7 +788,9 @@ Promise.all([loadMenu().catch(error => { console.warn(error); return []; }), loa
   applySite();
   applyUI();
   if (CALC_ON) { $('calcFab').hidden = false; if (UI.calc_text) $('calcFabText').textContent = UI.calc_text; if (UI.calc_text) $('calcTitle').textContent = UI.calc_text; renderFab(); }
-  $('searchWrap').hidden = !MENU.length || UI.search_show === false;
+  const searchAvailable = !!MENU.length && UI.search_show !== false;
+  $('searchToggle').style.display = searchAvailable ? '' : 'none';
+  $('searchWrap').hidden = true; $('searchWrap').classList.remove('open');
   if (SITE.hero_image_url && UI.banner_position !== 'hidden') { $('topBannerImg').src = SITE.hero_image_url; $('topBanner').hidden = false; }
   route();
 });
